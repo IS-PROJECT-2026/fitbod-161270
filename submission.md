@@ -60,15 +60,17 @@ Demonstrate your workflow mechanics by embedding your screenshots below.
 ### A. Milestones and Issues
 *Provide a screenshot showing your active milestone(s) and the granular tracking issues linked directly to them.*
 
-[PASTE YOUR MILESTONE SCREENSHOT DIRECTLY HERE]
+<img width="955" height="434" alt="image" src="https://github.com/user-attachments/assets/101a14c4-9ddc-45c1-a93d-431b56922165" />
 
-* **Caption:** [Write a brief sentence describing your milestones here]
+
+* **Caption:** The above is an image of one of the project milestones and the created issues
 
 ### B. Project Board
 *Provide a screenshot of your GitHub Project Board with your issues organized dynamically across columns (To Do, In Progress, Done).*
 
+<img width="959" height="455" alt="image" src="https://github.com/user-attachments/assets/60f92c0e-be3d-4c5f-91ab-9566302c549b" />
 
-* **Caption:** [Write a brief sentence describing your board state here]
+* **Caption:** An image of the Fitbod development dashboard
 
 ### C. Branching Architecture
 *Provide a screenshot showing your local or remote Git branch list, highlighting your use of conventional, issue-linked naming patterns (e.g., `feat/`, `fix/`, `style/`).*
