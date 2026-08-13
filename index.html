@@ -2,304 +2,540 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-    <title>FitTrack | Student Fitness Dashboard</title>
+    <meta
+        name="viewport"
+        content="width=device-width, initial-scale=1.0"
+    >
+
+    <meta
+        name="description"
+        content="FitBod student fitness and wellness dashboard"
+    >
+
+    <title>FitBod | Fitness Dashboard</title>
 
     <link rel="stylesheet" href="css/style.css">
 </head>
 
 <body>
 
-<header class="topbar">
+    <!-- ==========================================
+         HEADER
+    =========================================== -->
 
-    <div class="brand">
-        <div class="logo">FT</div>
-        <div>
-            <h1>FitTrack</h1>
-            <span>Student Fitness Dashboard</span>
-        </div>
-    </div>
+    <header class="topbar">
 
-    <button id="themeToggle" class="theme-btn">
-        🌙
-    </button>
+        <div class="brand">
 
-</header>
-
-
-<main class="container">
-
-    <section class="hero">
-
-        <div>
-            <p class="eyebrow">WELCOME BACK</p>
-
-            <h2>
-                Build better habits,
-                <span>one day at a time.</span>
-            </h2>
-
-            <p class="hero-text">
-                Track your workouts, hydration, steps and fitness progress
-                from one simple dashboard.
-            </p>
-        </div>
-
-        <div class="goal-card">
-
-            <p>Weekly Goal</p>
-
-            <strong id="goalProgress">0%</strong>
-
-            <div class="progress">
-                <div id="goalBar"></div>
+            <div class="logo">
+                FB
             </div>
 
-            <small>Keep moving toward your goal.</small>
+            <div class="brand-info">
 
-        </div>
+                <h1>FitBod</h1>
 
-    </section>
-
-
-    <section class="stats-grid">
-
-        <article class="stat-card">
-            <div class="stat-icon">🏃</div>
-            <div>
-                <p>Workouts</p>
-                <h3 id="workoutCount">0</h3>
-            </div>
-        </article>
-
-        <article class="stat-card">
-            <div class="stat-icon">💧</div>
-            <div>
-                <p>Water</p>
-                <h3><span id="waterCount">0</span> L</h3>
-            </div>
-        </article>
-
-        <article class="stat-card">
-            <div class="stat-icon">👟</div>
-            <div>
-                <p>Steps</p>
-                <h3 id="stepsCount">0</h3>
-            </div>
-        </article>
-
-        <article class="stat-card">
-            <div class="stat-icon">🔥</div>
-            <div>
-                <p>Calories</p>
-                <h3 id="calorieCount">0</h3>
-            </div>
-        </article>
-
-    </section>
-
-
-    <section class="content-grid">
-
-        <div class="panel">
-
-            <div class="panel-header">
-                <div>
-                    <p class="eyebrow">ACTIVITY</p>
-                    <h3>Recent Workouts</h3>
-                </div>
-
-                <button class="primary-btn" id="openWorkout">
-                    + Add Workout
-                </button>
-            </div>
-
-            <div id="workoutList" class="workout-list"></div>
-
-        </div>
-
-
-        <div class="panel">
-
-            <div class="panel-header">
-
-                <div>
-                    <p class="eyebrow">HEALTH</p>
-                    <h3>Daily Tracking</h3>
-                </div>
-
-            </div>
-
-
-            <div class="tracker">
-
-                <div class="tracker-row">
-
-                    <div>
-                        <strong>💧 Water Intake</strong>
-                        <p>Target: 2.5 litres</p>
-                    </div>
-
-                    <div class="tracker-value">
-                        <strong id="waterDisplay">0 L</strong>
-                        <button onclick="addWater()">+</button>
-                    </div>
-
-                </div>
-
-
-                <div class="tracker-row">
-
-                    <div>
-                        <strong>👟 Steps</strong>
-                        <p>Target: 10,000 steps</p>
-                    </div>
-
-                    <div class="tracker-value">
-                        <strong id="stepDisplay">0</strong>
-                        <button onclick="addSteps()">+</button>
-                    </div>
-
-                </div>
+                <span>
+                    Student Fitness Dashboard
+                </span>
 
             </div>
 
         </div>
 
-    </section>
-
-
-    <section class="content-grid">
-
-        <div class="panel">
-
-            <div class="panel-header">
-
-                <div>
-                    <p class="eyebrow">FITNESS TOOL</p>
-                    <h3>BMI Calculator</h3>
-                </div>
-
-            </div>
-
-            <div class="form-grid">
-
-                <div>
-                    <label for="height">Height (cm)</label>
-                    <input type="number" id="height" placeholder="e.g. 175">
-                </div>
-
-                <div>
-                    <label for="weight">Weight (kg)</label>
-                    <input type="number" id="weight" placeholder="e.g. 70">
-                </div>
-
-            </div>
-
-            <button class="primary-btn" onclick="calculateBMI()">
-                Calculate BMI
-            </button>
-
-            <div id="bmiResult" class="bmi-result">
-                Enter your details to calculate your BMI.
-            </div>
-
-        </div>
-
-
-        <div class="panel">
-
-            <div class="panel-header">
-
-                <div>
-                    <p class="eyebrow">PROGRESS</p>
-                    <h3>Fitness Summary</h3>
-                </div>
-
-            </div>
-
-            <div class="summary">
-
-                <div>
-                    <span>Workout Goal</span>
-                    <strong>5 sessions</strong>
-                </div>
-
-                <div>
-                    <span>Current Progress</span>
-                    <strong id="summaryProgress">0 sessions</strong>
-                </div>
-
-                <div>
-                    <span>Hydration Goal</span>
-                    <strong>2.5 L</strong>
-                </div>
-
-            </div>
-
-        </div>
-
-    </section>
-
-</main>
-
-
-<div id="workoutModal" class="modal">
-
-    <div class="modal-content">
-
-        <div class="modal-header">
-
-            <h3>Add Workout</h3>
-
-            <button id="closeWorkout" class="close-btn">
-                ×
-            </button>
-
-        </div>
-
-
-        <label for="workoutName">Workout Name</label>
-
-        <input
-            type="text"
-            id="workoutName"
-            placeholder="e.g. Morning Run"
+        <button
+            class="theme-btn"
+            id="themeToggle"
+            aria-label="Toggle dark mode"
         >
-
-
-        <label for="workoutDuration">Duration (minutes)</label>
-
-        <input
-            type="number"
-            id="workoutDuration"
-            placeholder="e.g. 45"
-        >
-
-
-        <label for="workoutCalories">Calories Burned</label>
-
-        <input
-            type="number"
-            id="workoutCalories"
-            placeholder="e.g. 350"
-        >
-
-
-        <button class="primary-btn full-width" onclick="addWorkout()">
-            Save Workout
+            🌙
         </button>
 
-    </div>
-
-</div>
+    </header>
 
 
-<script src="js/storage.js"></script>
-<script src="js/workouts.js"></script>
-<script src="js/dashboard.js"></script>
-<script src="js/app.js"></script>
+    <!-- ==========================================
+         MAIN CONTENT
+    =========================================== -->
+
+    <main class="container">
+
+
+        <!-- ======================================
+             HERO SECTION
+        ======================================= -->
+
+        <section class="hero">
+
+            <div class="hero-content">
+
+                <p class="eyebrow">
+                    WELCOME BACK
+                </p>
+
+                <h2>
+                    Build better habits,
+                    <span>one day at a time.</span>
+                </h2>
+
+                <p class="hero-text">
+                    Track your workouts, hydration, steps
+                    and fitness progress from one simple
+                    dashboard.
+                </p>
+
+            </div>
+
+
+            <div class="goal-card">
+
+                <div class="goal-header">
+
+                    <div>
+                        <p>Weekly Goal</p>
+
+                        <small>
+                            Fitness progress
+                        </small>
+                    </div>
+
+                    <span class="goal-icon">
+                        🎯
+                    </span>
+
+                </div>
+
+                <strong id="goalProgress">
+                    0%
+                </strong>
+
+                <div class="progress">
+
+                    <div id="goalBar"></div>
+
+                </div>
+
+                <small class="goal-message">
+                    Keep moving toward your goal.
+                </small>
+
+            </div>
+
+        </section>
+
+
+        <!-- ======================================
+             STATISTICS SECTION
+        ======================================= -->
+
+        <section
+            class="stats-grid"
+            aria-label="Fitness statistics"
+        >
+
+            <article class="stat-card">
+
+                <div class="stat-icon">
+                    🏃
+                </div>
+
+                <div>
+
+                    <p>Workouts</p>
+
+                    <h3 id="workoutCount">
+                        0
+                    </h3>
+
+                </div>
+
+            </article>
+
+
+            <article class="stat-card">
+
+                <div class="stat-icon">
+                    💧
+                </div>
+
+                <div>
+
+                    <p>Water</p>
+
+                    <h3>
+                        <span id="waterCount">
+                            0
+                        </span>
+                        L
+                    </h3>
+
+                </div>
+
+            </article>
+
+
+            <article class="stat-card">
+
+                <div class="stat-icon">
+                    👟
+                </div>
+
+                <div>
+
+                    <p>Steps</p>
+
+                    <h3 id="stepsCount">
+                        0
+                    </h3>
+
+                </div>
+
+            </article>
+
+
+            <article class="stat-card">
+
+                <div class="stat-icon">
+                    🔥
+                </div>
+
+                <div>
+
+                    <p>Calories</p>
+
+                    <h3 id="calorieCount">
+                        0
+                    </h3>
+
+                </div>
+
+            </article>
+
+        </section>
+
+
+        <!-- ======================================
+             MAIN DASHBOARD GRID
+        ======================================= -->
+
+        <section class="dashboard-grid">
+
+
+            <!-- ==================================
+                 ACTIVITY PANEL
+            =================================== -->
+
+            <article class="panel activity-panel">
+
+                <div class="panel-header">
+
+                    <div>
+
+                        <p class="eyebrow">
+                            ACTIVITY
+                        </p>
+
+                        <h3>
+                            Recent Workouts
+                        </h3>
+
+                    </div>
+
+                    <button class="primary-btn">
+                        + Add Workout
+                    </button>
+
+                </div>
+
+
+                <div
+                    id="workoutList"
+                    class="workout-list"
+                >
+
+                    <div class="empty-state">
+
+                        <div class="empty-icon">
+                            🏃
+                        </div>
+
+                        <strong>
+                            No workouts yet
+                        </strong>
+
+                        <p>
+                            Add your first workout
+                            to start tracking.
+                        </p>
+
+                    </div>
+
+                </div>
+
+            </article>
+
+
+            <!-- ==================================
+                 DAILY TRACKING PANEL
+            =================================== -->
+
+            <article class="panel tracking-panel">
+
+                <div class="panel-header">
+
+                    <div>
+
+                        <p class="eyebrow">
+                            HEALTH
+                        </p>
+
+                        <h3>
+                            Daily Tracking
+                        </h3>
+
+                    </div>
+
+                </div>
+
+
+                <div class="tracker">
+
+
+                    <div class="tracker-row">
+
+                        <div class="tracker-information">
+
+                            <div class="tracker-icon">
+                                💧
+                            </div>
+
+                            <div>
+
+                                <strong>
+                                    Water Intake
+                                </strong>
+
+                                <p>
+                                    Target: 2.5 litres
+                                </p>
+
+                            </div>
+
+                        </div>
+
+
+                        <div class="tracker-value">
+
+                            <strong id="waterDisplay">
+                                0 L
+                            </strong>
+
+                            <button>
+                                +
+                            </button>
+
+                        </div>
+
+                    </div>
+
+
+                    <div class="tracker-row">
+
+                        <div class="tracker-information">
+
+                            <div class="tracker-icon">
+                                👟
+                            </div>
+
+                            <div>
+
+                                <strong>
+                                    Steps
+                                </strong>
+
+                                <p>
+                                    Target: 10,000 steps
+                                </p>
+
+                            </div>
+
+                        </div>
+
+
+                        <div class="tracker-value">
+
+                            <strong id="stepDisplay">
+                                0
+                            </strong>
+
+                            <button>
+                                +
+                            </button>
+
+                        </div>
+
+                    </div>
+
+                </div>
+
+            </article>
+
+        </section>
+
+
+        <!-- ======================================
+             SECONDARY DASHBOARD GRID
+        ======================================= -->
+
+        <section class="dashboard-grid secondary-grid">
+
+
+            <article class="panel">
+
+                <div class="panel-header">
+
+                    <div>
+
+                        <p class="eyebrow">
+                            FITNESS TOOL
+                        </p>
+
+                        <h3>
+                            BMI Calculator
+                        </h3>
+
+                    </div>
+
+                </div>
+
+
+                <div class="form-grid">
+
+                    <div class="form-group">
+
+                        <label for="height">
+                            Height (cm)
+                        </label>
+
+                        <input
+                            type="number"
+                            id="height"
+                            placeholder="175"
+                        >
+
+                    </div>
+
+
+                    <div class="form-group">
+
+                        <label for="weight">
+                            Weight (kg)
+                        </label>
+
+                        <input
+                            type="number"
+                            id="weight"
+                            placeholder="70"
+                        >
+
+                    </div>
+
+                </div>
+
+
+                <button class="primary-btn">
+                    Calculate BMI
+                </button>
+
+
+                <div
+                    id="bmiResult"
+                    class="bmi-result"
+                >
+                    Enter your details to calculate
+                    your BMI.
+                </div>
+
+            </article>
+
+
+            <article class="panel">
+
+                <div class="panel-header">
+
+                    <div>
+
+                        <p class="eyebrow">
+                            PROGRESS
+                        </p>
+
+                        <h3>
+                            Fitness Summary
+                        </h3>
+
+                    </div>
+
+                </div>
+
+
+                <div class="summary">
+
+                    <div>
+
+                        <span>
+                            Workout Goal
+                        </span>
+
+                        <strong>
+                            5 sessions
+                        </strong>
+
+                    </div>
+
+
+                    <div>
+
+                        <span>
+                            Current Progress
+                        </span>
+
+                        <strong id="summaryProgress">
+                            0 sessions
+                        </strong>
+
+                    </div>
+
+
+                    <div>
+
+                        <span>
+                            Hydration Goal
+                        </span>
+
+                        <strong>
+                            2.5 L
+                        </strong>
+
+                    </div>
+
+                </div>
+
+            </article>
+
+        </section>
+
+    </main>
+
+
+    <!-- ==========================================
+         JAVASCRIPT
+    =========================================== -->
+
+    <script src="js/storage.js"></script>
+    <script src="js/workouts.js"></script>
+    <script src="js/dashboard.js"></script>
+    <script src="js/app.js"></script>
 
 </body>
 </html>
