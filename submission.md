@@ -101,9 +101,10 @@ You must engineer **three merge conflicts**, each triggered by a **different cau
 #### Step 1: Generating the Clash
 *Screenshot showing the merge attempt and the conflict warning.*
 
-[PASTE SCREENSHOT OF ATTEMPTED MERGE / TERMINAL WARNING HERE]
+<img width="957" height="464" alt="image" src="https://github.com/user-attachments/assets/80d6101b-7404-4ac7-9f03-3bf085a27092" />
 
-* **Caption:** [Describe which two branches collided and the warning received]
+
+* **Caption:** The feat/2-dashboard-layout branch is being merged into main, but both branches have conflicting changes in index.html. GitHub warns that the conflicts must be resolved before the pull request can be merged.
 
 #### Step 2: Inside the Code Editor (Conflict Markers)
 *Screenshot showing the raw, unresolved conflict markers (`<<<<<<< HEAD`, `=======`, `>>>>>>>`) in your editor.*
