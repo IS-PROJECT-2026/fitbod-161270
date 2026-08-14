@@ -1637,3 +1637,352 @@ input:focus {
     }
 
 }
+
+/* =========================================
+   ISSUE #6
+   NAVIGATION + LIGHT MODE + BMI
+========================================= */
+
+
+/* =========================================
+   NAVIGATION
+========================================= */
+
+.main-navigation {
+    position: sticky;
+    top: 0;
+    z-index: 1000;
+
+    width: 100%;
+
+    background: var(
+        --background-color,
+        #0f172a
+    );
+
+    border-bottom: 1px solid var(
+        --border-color,
+        #334155
+    );
+
+    backdrop-filter: blur(10px);
+}
+
+
+.nav-container {
+    width: min(1200px, 92%);
+    margin: 0 auto;
+
+    display: flex;
+    align-items: center;
+
+    gap: 8px;
+
+    padding: 10px 0;
+
+    overflow-x: auto;
+}
+
+
+.nav-link {
+    flex-shrink: 0;
+
+    padding: 10px 16px;
+
+    border-radius: 8px;
+
+    color: var(
+        --text-secondary,
+        #94a3b8
+    );
+
+    text-decoration: none;
+
+    font-size: 14px;
+
+    font-weight: 600;
+
+    transition:
+        background 0.2s ease,
+        color 0.2s ease;
+}
+
+
+.nav-link:hover {
+    color: var(
+        --text-primary,
+        #ffffff
+    );
+
+    background: rgba(
+        255,
+        255,
+        255,
+        0.08
+    );
+}
+
+
+.nav-link.active {
+    color: #ffffff;
+
+    background: #22c55e;
+}
+
+
+/* =========================================
+   LIGHT MODE
+========================================= */
+
+body.light-mode {
+
+    --background-color: #f8fafc;
+
+    --card-background: #ffffff;
+
+    --text-primary: #0f172a;
+
+    --text-secondary: #475569;
+
+    --border-color: #e2e8f0;
+
+    --muted-color: #64748b;
+
+    background: var(
+        --background-color
+    );
+
+    color: var(
+        --text-primary
+    );
+}
+
+
+/* PAGE BACKGROUND */
+
+body.light-mode .main-navigation {
+
+    background: rgba(
+        255,
+        255,
+        255,
+        0.95
+    );
+
+    border-bottom-color:
+        var(--border-color);
+
+}
+
+
+/* NAVIGATION */
+
+body.light-mode .nav-link {
+
+    color:
+        var(--text-secondary);
+
+}
+
+
+body.light-mode .nav-link:hover {
+
+    color:
+        var(--text-primary);
+
+    background:
+        #f1f5f9;
+
+}
+
+
+body.light-mode .nav-link.active {
+
+    color: #ffffff;
+
+    background: #16a34a;
+
+}
+
+
+/* PANELS */
+
+body.light-mode .panel,
+body.light-mode .stat-card,
+body.light-mode .goal-card {
+
+    background:
+        var(--card-background);
+
+    color:
+        var(--text-primary);
+
+    border-color:
+        var(--border-color);
+
+}
+
+
+/* TEXT */
+
+body.light-mode p,
+body.light-mode span {
+
+    color:
+        var(--text-secondary);
+
+}
+
+
+body.light-mode h1,
+body.light-mode h2,
+body.light-mode h3,
+body.light-mode strong {
+
+    color:
+        var(--text-primary);
+
+}
+
+
+/* INPUTS */
+
+body.light-mode input,
+body.light-mode select {
+
+    background:
+        #ffffff;
+
+    color:
+        #0f172a;
+
+    border-color:
+        #cbd5e1;
+
+}
+
+
+body.light-mode input::placeholder {
+
+    color:
+        #94a3b8;
+
+}
+
+
+/* WORKOUT ITEMS */
+
+body.light-mode .workout-item {
+
+    background:
+        #ffffff;
+
+    border-color:
+        #e2e8f0;
+
+}
+
+
+/* TRACKER */
+
+body.light-mode .tracker-row {
+
+    border-color:
+        #e2e8f0;
+
+}
+
+
+/* MODAL */
+
+body.light-mode .workout-modal {
+
+    background:
+        #ffffff;
+
+    color:
+        #0f172a;
+
+    border-color:
+        #e2e8f0;
+
+}
+
+
+/* =========================================
+   BMI RESULT
+========================================= */
+
+.bmi-result {
+
+    margin-top: 20px;
+
+    padding: 16px;
+
+    border-radius: 10px;
+
+    background:
+        rgba(
+            34,
+            197,
+            94,
+            0.10
+        );
+
+    border: 1px solid
+        rgba(
+            34,
+            197,
+            94,
+            0.25
+        );
+
+    font-weight: 700;
+
+}
+
+
+.bmi-category {
+
+    margin-top: 10px;
+
+    font-weight: 600;
+
+    color:
+        #22c55e;
+
+}
+
+
+/* =========================================
+   MOBILE NAVIGATION
+========================================= */
+
+@media (max-width: 700px) {
+
+    .nav-container {
+
+        width: 95%;
+
+    }
+
+
+    .nav-link {
+
+        padding:
+            9px 12px;
+
+        font-size:
+            13px;
+
+    }
+
+
+    .bmi-result {
+
+        font-size:
+            14px;
+
+    }
+
+}
