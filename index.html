@@ -1,9 +1,20 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
 
-    <title>Fitbod | Student Fitness Dashboard</title>
+    <meta
+        name="viewport"
+        content="width=device-width, initial-scale=1.0"
+    >
+
+    <meta
+        name="description"
+        content="FitBod student fitness and wellness dashboard"
+    >
+
+    <title>FitBod | Fitness Dashboard</title>
 
     <link rel="stylesheet" href="css/style.css">
 </head>
@@ -18,7 +29,7 @@
 
         <div class="brand">
 
-            <div class="logo">
+            <div class="logo" aria-hidden="true">
                 FB
             </div>
 
@@ -32,17 +43,15 @@
 
             </div>
 
-    <div class="brand">
-        <div class="logo">FT</div>
-        <div>
-            <h1>Fitbod</h1>
-            <span>Student Fitness Dashboard</span>
         </div>
 
+
         <button
+            type="button"
             class="theme-btn"
             id="themeToggle"
             aria-label="Toggle dark mode"
+            title="Toggle dark mode"
         >
             🌙
         </button>
@@ -88,28 +97,39 @@
                 <div class="goal-header">
 
                     <div>
-                        <p>Weekly Goal</p>
+
+                        <p>
+                            Weekly Goal
+                        </p>
 
                         <small>
                             Fitness progress
                         </small>
+
                     </div>
 
-                    <span class="goal-icon">
+                    <span
+                        class="goal-icon"
+                        aria-hidden="true"
+                    >
                         🎯
                     </span>
 
                 </div>
 
+
                 <strong id="goalProgress">
                     0%
                 </strong>
 
-                <div class="progress">
 
+                <div
+                    class="progress"
+                    aria-label="Weekly fitness goal progress"
+                >
                     <div id="goalBar"></div>
-
                 </div>
+
 
                 <small class="goal-message">
                     Keep moving toward your goal.
@@ -131,13 +151,18 @@
 
             <article class="stat-card">
 
-                <div class="stat-icon">
+                <div
+                    class="stat-icon"
+                    aria-hidden="true"
+                >
                     🏃
                 </div>
 
                 <div>
 
-                    <p>Workouts</p>
+                    <p>
+                        Workouts
+                    </p>
 
                     <h3 id="workoutCount">
                         0
@@ -150,13 +175,18 @@
 
             <article class="stat-card">
 
-                <div class="stat-icon">
+                <div
+                    class="stat-icon"
+                    aria-hidden="true"
+                >
                     💧
                 </div>
 
                 <div>
 
-                    <p>Water</p>
+                    <p>
+                        Water
+                    </p>
 
                     <h3>
                         <span id="waterCount">
@@ -172,13 +202,18 @@
 
             <article class="stat-card">
 
-                <div class="stat-icon">
+                <div
+                    class="stat-icon"
+                    aria-hidden="true"
+                >
                     👟
                 </div>
 
                 <div>
 
-                    <p>Steps</p>
+                    <p>
+                        Steps
+                    </p>
 
                     <h3 id="stepsCount">
                         0
@@ -191,13 +226,18 @@
 
             <article class="stat-card">
 
-                <div class="stat-icon">
+                <div
+                    class="stat-icon"
+                    aria-hidden="true"
+                >
                     🔥
                 </div>
 
                 <div>
 
-                    <p>Calories</p>
+                    <p>
+                        Calories
+                    </p>
 
                     <h3 id="calorieCount">
                         0
@@ -237,7 +277,10 @@
 
                     </div>
 
-                    <button class="primary-btn">
+                    <button
+                        type="button"
+                        class="primary-btn"
+                    >
                         + Add Workout
                     </button>
 
@@ -251,7 +294,10 @@
 
                     <div class="empty-state">
 
-                        <div class="empty-icon">
+                        <div
+                            class="empty-icon"
+                            aria-hidden="true"
+                        >
                             🏃
                         </div>
 
@@ -297,11 +343,16 @@
                 <div class="tracker">
 
 
+                    <!-- WATER -->
+
                     <div class="tracker-row">
 
                         <div class="tracker-information">
 
-                            <div class="tracker-icon">
+                            <div
+                                class="tracker-icon"
+                                aria-hidden="true"
+                            >
                                 💧
                             </div>
 
@@ -326,7 +377,10 @@
                                 0 L
                             </strong>
 
-                            <button>
+                            <button
+                                type="button"
+                                aria-label="Add water"
+                            >
                                 +
                             </button>
 
@@ -335,11 +389,16 @@
                     </div>
 
 
+                    <!-- STEPS -->
+
                     <div class="tracker-row">
 
                         <div class="tracker-information">
 
-                            <div class="tracker-icon">
+                            <div
+                                class="tracker-icon"
+                                aria-hidden="true"
+                            >
                                 👟
                             </div>
 
@@ -364,7 +423,10 @@
                                 0
                             </strong>
 
-                            <button>
+                            <button
+                                type="button"
+                                aria-label="Add steps"
+                            >
                                 +
                             </button>
 
@@ -385,6 +447,10 @@
 
         <section class="dashboard-grid secondary-grid">
 
+
+            <!-- ==================================
+                 BMI CALCULATOR
+            =================================== -->
 
             <article class="panel">
 
@@ -417,6 +483,8 @@
                             type="number"
                             id="height"
                             placeholder="175"
+                            min="1"
+                            inputmode="decimal"
                         >
 
                     </div>
@@ -432,6 +500,8 @@
                             type="number"
                             id="weight"
                             placeholder="70"
+                            min="1"
+                            inputmode="decimal"
                         >
 
                     </div>
@@ -439,7 +509,10 @@
                 </div>
 
 
-                <button class="primary-btn">
+                <button
+                    type="button"
+                    class="primary-btn"
+                >
                     Calculate BMI
                 </button>
 
@@ -447,6 +520,7 @@
                 <div
                     id="bmiResult"
                     class="bmi-result"
+                    aria-live="polite"
                 >
                     Enter your details to calculate
                     your BMI.
@@ -454,6 +528,10 @@
 
             </article>
 
+
+            <!-- ==================================
+                 FITNESS SUMMARY
+            =================================== -->
 
             <article class="panel">
 
@@ -533,4 +611,5 @@
     <script src="js/app.js"></script>
 
 </body>
+
 </html>
