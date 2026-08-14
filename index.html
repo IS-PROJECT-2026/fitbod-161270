@@ -427,100 +427,138 @@
 
                     <!-- WATER -->
 
-                    <div class="tracker-row">
+<div class="tracker-row">
 
-                        <div class="tracker-information">
+    <div class="tracker-information">
 
-                            <div
-                                class="tracker-icon"
-                                aria-hidden="true"
-                            >
-                                💧
-                            </div>
+        <div
+            class="tracker-icon"
+            aria-hidden="true"
+        >
+            💧
+        </div>
 
+        <div>
 
-                            <div>
+            <strong>
+                Water Intake
+            </strong>
 
-                                <strong>
-                                    Water Intake
-                                </strong>
+            <p>
+                Target: 2.5 litres
+            </p>
 
-                                <p>
-                                    Target: 2.5 litres
-                                </p>
+        </div>
 
-                            </div>
-
-                        </div>
-
-
-                        <div class="tracker-value">
-
-                            <strong id="waterDisplay">
-                                0 L
-                            </strong>
+    </div>
 
 
-                            <button
-                                type="button"
-                                id="addWaterBtn"
-                                aria-label="Add water"
-                            >
-                                +
-                            </button>
+    <div class="tracker-value">
 
-                        </div>
+        <strong id="waterDisplay">
+            0 L
+        </strong>
 
-                    </div>
+
+        <button
+            type="button"
+            id="addWaterBtn"
+            class="tracker-add-btn"
+            aria-label="Add 250 millilitres of water"
+            title="Add 250 ml"
+        >
+            +
+        </button>
+
+    </div>
+
+
+    <div class="tracker-progress-container">
+
+        <div class="tracker-progress">
+
+            <div
+                id="waterProgressBar"
+                class="tracker-progress-bar"
+            ></div>
+
+        </div>
+
+        <small id="waterProgressText">
+            0% of daily goal
+        </small>
+
+    </div>
+
+</div>
 
 
                     <!-- STEPS -->
 
-                    <div class="tracker-row">
+<div class="tracker-row">
 
-                        <div class="tracker-information">
+    <div class="tracker-information">
 
-                            <div
-                                class="tracker-icon"
-                                aria-hidden="true"
-                            >
-                                👟
-                            </div>
+        <div
+            class="tracker-icon"
+            aria-hidden="true"
+        >
+            👟
+        </div>
 
+        <div>
 
-                            <div>
+            <strong>
+                Steps
+            </strong>
 
-                                <strong>
-                                    Steps
-                                </strong>
+            <p>
+                Target: 10,000 steps
+            </p>
 
-                                <p>
-                                    Target: 10,000 steps
-                                </p>
+        </div>
 
-                            </div>
-
-                        </div>
-
-
-                        <div class="tracker-value">
-
-                            <strong id="stepDisplay">
-                                0
-                            </strong>
+    </div>
 
 
-                            <button
-                                type="button"
-                                id="addStepsBtn"
-                                aria-label="Add steps"
-                            >
-                                +
-                            </button>
+    <div class="tracker-value">
 
-                        </div>
+        <strong id="stepDisplay">
+            0
+        </strong>
 
-                    </div>
+
+        <button
+            type="button"
+            id="addStepsBtn"
+            class="tracker-add-btn"
+            aria-label="Add 500 steps"
+            title="Add 500 steps"
+        >
+            +
+        </button>
+
+    </div>
+
+
+    <div class="tracker-progress-container">
+
+        <div class="tracker-progress">
+
+            <div
+                id="stepsProgressBar"
+                class="tracker-progress-bar"
+            ></div>
+
+        </div>
+
+        <small id="stepsProgressText">
+            0% of daily goal
+        </small>
+
+    </div>
+
+</div>
 
                 </div>
 
@@ -895,6 +933,8 @@
     <script src="js/workouts.js"></script>
 
     <script src="js/dashboard.js"></script>
+
+    <script src="js/tracking.js"></script>
 
     <script src="js/app.js"></script>
 

@@ -1986,3 +1986,123 @@ body.light-mode .workout-modal {
     }
 
 }
+
+/* ==========================================
+   ISSUE #7
+   WATER AND STEPS PROGRESS
+========================================== */
+
+.tracker-progress-container {
+
+    width: 100%;
+
+    margin-top: 10px;
+
+}
+
+
+.tracker-progress {
+
+    width: 100%;
+
+    height: 7px;
+
+    background: var(--border);
+
+    border-radius: 50px;
+
+    overflow: hidden;
+
+}
+
+
+.tracker-progress-bar {
+
+    width: 0%;
+
+    height: 100%;
+
+    background: var(--primary);
+
+    border-radius: inherit;
+
+    transition:
+        width 0.3s ease;
+
+}
+
+
+.tracker-progress-container small {
+
+    display: block;
+
+    margin-top: 5px;
+
+    color: var(--muted);
+
+    font-size: 11px;
+
+}
+
+
+.tracker-add-btn {
+
+    width: 34px;
+
+    height: 34px;
+
+    border: none;
+
+    border-radius: 9px;
+
+    background: var(--primary);
+
+    color: #ffffff;
+
+    cursor: pointer;
+
+    font-size: 20px;
+
+    font-weight: 700;
+
+    transition:
+        transform 0.2s ease,
+        background 0.2s ease;
+
+}
+
+
+.tracker-add-btn:hover {
+
+    background:
+        var(--primary-dark);
+
+    transform:
+        translateY(-2px);
+
+}
+
+
+.tracker-add-btn:active {
+
+    transform:
+        translateY(0);
+
+}
+
+
+/* ==========================================
+   MOBILE TRACKING
+========================================== */
+
+@media (max-width: 700px) {
+
+    .tracker-progress-container {
+
+        width: 100%;
+
+        margin-top: 5px;
+
+    }
+
+}
