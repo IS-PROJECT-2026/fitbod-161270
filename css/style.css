@@ -1,6 +1,6 @@
 /* ==========================================
    FITBOD
-   Responsive Dashboard Styles
+   Responsive Dashboard + Visual Theme
 ========================================== */
 
 
@@ -35,6 +35,8 @@
 
     --primary-dark: #5148e5;
 
+    --primary-soft: rgba(99, 91, 255, 0.10);
+
     --border: #e6e8ef;
 
     --success: #16a34a;
@@ -44,40 +46,61 @@
     --shadow:
         0 12px 30px rgba(24, 32, 56, 0.08);
 
+    --shadow-hover:
+        0 18px 38px rgba(24, 32, 56, 0.13);
+
     --radius-small: 10px;
 
     --radius-medium: 16px;
 
     --radius-large: 20px;
+
+    --transition:
+        0.25s ease;
 }
 
 
 /* ==========================================
-   DARK MODE VARIABLES
+   DARK MODE
 ========================================== */
 
 body.dark {
 
-    --bg: #10131d;
+    --bg: #0f1117;
 
-    --surface: #191d29;
+    --surface: #181b24;
 
-    --surface-secondary: #202533;
+    --surface-secondary: #20242f;
 
     --text: #f4f5f7;
 
     --muted: #a9afbd;
 
-    --border: #2a3040;
+    --primary: #7c73ff;
+
+    --primary-dark: #675ef0;
+
+    --primary-soft:
+        rgba(124, 115, 255, 0.14);
+
+    --border: #2d3340;
 
     --shadow:
-        0 12px 30px rgba(0, 0, 0, 0.25);
+        0 12px 30px rgba(0, 0, 0, 0.28);
+
+    --shadow-hover:
+        0 18px 38px rgba(0, 0, 0, 0.38);
 }
 
 
 /* ==========================================
    BODY
 ========================================== */
+
+html {
+    scroll-behavior: smooth;
+}
+
 
 body {
 
@@ -95,8 +118,32 @@ body {
     line-height: 1.5;
 
     transition:
-        background-color 0.25s ease,
-        color 0.25s ease;
+        background-color var(--transition),
+        color var(--transition);
+}
+
+
+/* ==========================================
+   BUTTONS + INPUTS
+========================================== */
+
+button,
+input {
+    font: inherit;
+}
+
+
+button {
+    -webkit-tap-highlight-color: transparent;
+}
+
+
+button:focus-visible,
+input:focus-visible {
+    outline: 3px solid
+        rgba(99, 91, 255, 0.25);
+
+    outline-offset: 2px;
 }
 
 
@@ -121,6 +168,16 @@ body {
 
     padding:
         0 clamp(20px, 6vw, 90px);
+
+    position: sticky;
+
+    top: 0;
+
+    z-index: 100;
+
+    transition:
+        background-color var(--transition),
+        border-color var(--transition);
 }
 
 
@@ -131,6 +188,8 @@ body {
     align-items: center;
 
     gap: 12px;
+
+    min-width: 0;
 }
 
 
@@ -142,7 +201,12 @@ body {
 
     border-radius: 12px;
 
-    background: var(--primary);
+    background:
+        linear-gradient(
+            135deg,
+            var(--primary),
+            var(--primary-dark)
+        );
 
     color: #ffffff;
 
@@ -153,6 +217,18 @@ body {
     font-weight: 800;
 
     font-size: 14px;
+
+    flex-shrink: 0;
+
+    box-shadow:
+        0 8px 18px
+        rgba(99, 91, 255, 0.20);
+}
+
+
+.brand-info {
+
+    min-width: 0;
 }
 
 
@@ -161,6 +237,8 @@ body {
     font-size: 20px;
 
     line-height: 1.2;
+
+    letter-spacing: -0.3px;
 }
 
 
@@ -175,6 +253,10 @@ body {
     margin-top: 2px;
 }
 
+
+/* ==========================================
+   THEME BUTTON
+========================================== */
 
 .theme-btn {
 
@@ -195,9 +277,14 @@ body {
 
     font-size: 17px;
 
+    display: grid;
+
+    place-items: center;
+
     transition:
-        transform 0.2s ease,
-        border-color 0.2s ease;
+        transform var(--transition),
+        border-color var(--transition),
+        background-color var(--transition);
 }
 
 
@@ -206,6 +293,8 @@ body {
     transform: translateY(-2px);
 
     border-color: var(--primary);
+
+    background: var(--primary-soft);
 }
 
 
@@ -312,6 +401,17 @@ body {
         var(--radius-large);
 
     box-shadow: var(--shadow);
+
+    transition:
+        background-color var(--transition),
+        border-color var(--transition),
+        box-shadow var(--transition);
+}
+
+
+.goal-card:hover {
+
+    box-shadow: var(--shadow-hover);
 }
 
 
@@ -378,7 +478,12 @@ body {
 
     width: 0%;
 
-    background: var(--primary);
+    background:
+        linear-gradient(
+            90deg,
+            var(--primary),
+            var(--primary-dark)
+        );
 
     border-radius: inherit;
 
@@ -435,18 +540,18 @@ body {
     box-shadow: var(--shadow);
 
     transition:
-        transform 0.2s ease,
-        box-shadow 0.2s ease;
+        transform var(--transition),
+        box-shadow var(--transition),
+        background-color var(--transition),
+        border-color var(--transition);
 }
 
 
 .stat-card:hover {
 
-    transform: translateY(-3px);
+    transform: translateY(-4px);
 
-    box-shadow:
-        0 16px 34px
-        rgba(24, 32, 56, 0.12);
+    box-shadow: var(--shadow-hover);
 }
 
 
@@ -460,8 +565,7 @@ body {
 
     border-radius: 12px;
 
-    background:
-        rgba(99, 91, 255, 0.1);
+    background: var(--primary-soft);
 
     display: grid;
 
@@ -531,6 +635,17 @@ body {
     padding: 24px;
 
     box-shadow: var(--shadow);
+
+    transition:
+        background-color var(--transition),
+        border-color var(--transition),
+        box-shadow var(--transition);
+}
+
+
+.panel:hover {
+
+    box-shadow: var(--shadow-hover);
 }
 
 
@@ -557,14 +672,19 @@ body {
 
 
 /* ==========================================
-   BUTTONS
+   PRIMARY BUTTON
 ========================================== */
 
 .primary-btn {
 
     border: none;
 
-    background: var(--primary);
+    background:
+        linear-gradient(
+            135deg,
+            var(--primary),
+            var(--primary-dark)
+        );
 
     color: #ffffff;
 
@@ -579,17 +699,30 @@ body {
 
     white-space: nowrap;
 
+    box-shadow:
+        0 7px 15px
+        rgba(99, 91, 255, 0.16);
+
     transition:
-        background 0.2s ease,
-        transform 0.2s ease;
+        background var(--transition),
+        transform var(--transition),
+        box-shadow var(--transition);
 }
 
 
 .primary-btn:hover {
 
-    background: var(--primary-dark);
+    transform: translateY(-2px);
 
-    transform: translateY(-1px);
+    box-shadow:
+        0 10px 20px
+        rgba(99, 91, 255, 0.24);
+}
+
+
+.primary-btn:active {
+
+    transform: translateY(0);
 }
 
 
@@ -623,6 +756,21 @@ body {
     padding: 14px;
 
     border-radius: 12px;
+
+    background: var(--surface-secondary);
+
+    transition:
+        background-color var(--transition),
+        border-color var(--transition),
+        transform var(--transition);
+}
+
+
+.workout:hover {
+
+    transform: translateY(-2px);
+
+    border-color: var(--primary);
 }
 
 
@@ -679,6 +827,14 @@ body {
 }
 
 
+.empty-state strong {
+
+    display: block;
+
+    font-size: 15px;
+}
+
+
 .empty-state p {
 
     color: var(--muted);
@@ -719,6 +875,20 @@ body {
     align-items: center;
 
     gap: 15px;
+
+    background: var(--surface-secondary);
+
+    transition:
+        border-color var(--transition),
+        transform var(--transition);
+}
+
+
+.tracker-row:hover {
+
+    border-color: var(--primary);
+
+    transform: translateY(-2px);
 }
 
 
@@ -748,8 +918,7 @@ body {
 
     border-radius: 10px;
 
-    background:
-        rgba(99, 91, 255, 0.1);
+    background: var(--primary-soft);
 }
 
 
@@ -792,6 +961,20 @@ body {
     cursor: pointer;
 
     font-size: 20px;
+
+    line-height: 1;
+
+    transition:
+        background var(--transition),
+        transform var(--transition);
+}
+
+
+.tracker-value button:hover {
+
+    background: var(--primary-dark);
+
+    transform: scale(1.05);
 }
 
 
@@ -848,6 +1031,19 @@ input {
     outline: none;
 
     font-size: 14px;
+
+    transition:
+        border-color var(--transition),
+        box-shadow var(--transition),
+        background-color var(--transition);
+}
+
+
+input::placeholder {
+
+    color: var(--muted);
+
+    opacity: 0.7;
 }
 
 
@@ -857,7 +1053,7 @@ input:focus {
 
     box-shadow:
         0 0 0 3px
-        rgba(99, 91, 255, 0.1);
+        rgba(99, 91, 255, 0.12);
 }
 
 
@@ -878,6 +1074,13 @@ input:focus {
     color: var(--muted);
 
     font-size: 14px;
+
+    border:
+        1px solid var(--border);
+
+    transition:
+        background-color var(--transition),
+        border-color var(--transition);
 }
 
 
@@ -929,11 +1132,13 @@ input:focus {
 .summary strong {
 
     font-size: 14px;
+
+    color: var(--text);
 }
 
 
 /* ==========================================
-   TABLET RESPONSIVENESS
+   LARGE TABLETS
    901px - 1100px
 ========================================== */
 
@@ -1032,7 +1237,8 @@ input:focus {
 
     .container {
 
-        width: calc(100% - 28px);
+        width:
+            calc(100% - 28px);
 
         margin:
             24px auto 40px;
@@ -1181,6 +1387,41 @@ input:focus {
     .stat-card h3 {
 
         font-size: 22px;
+    }
+
+
+    .theme-btn {
+
+        width: 38px;
+
+        height: 38px;
+
+        font-size: 15px;
+    }
+
+}
+
+
+/* ==========================================
+   REDUCED MOTION
+========================================== */
+
+@media (prefers-reduced-motion: reduce) {
+
+    html {
+        scroll-behavior: auto;
+    }
+
+
+    *,
+    *::before,
+    *::after {
+
+        transition-duration: 0.01ms !important;
+
+        animation-duration: 0.01ms !important;
+
+        animation-iteration-count: 1 !important;
     }
 
 }
