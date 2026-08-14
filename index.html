@@ -2,6 +2,7 @@
 <html lang="en">
 
 <head>
+
     <meta charset="UTF-8">
 
     <meta
@@ -17,21 +18,28 @@
     <title>FitBod | Fitness Dashboard</title>
 
     <link rel="stylesheet" href="css/style.css">
+
 </head>
+
 
 <body>
 
-    <!-- ==========================================
+
+    <!-- =========================================
          HEADER
-    =========================================== -->
+    ========================================== -->
 
     <header class="topbar">
 
         <div class="brand">
 
-            <div class="logo" aria-hidden="true">
+            <div
+                class="logo"
+                aria-hidden="true"
+            >
                 FB
             </div>
+
 
             <div class="brand-info">
 
@@ -50,25 +58,83 @@
             type="button"
             class="theme-btn"
             id="themeToggle"
-            aria-label="Toggle dark mode"
-            title="Toggle dark mode"
+            aria-label="Switch to light mode"
+            title="Switch to light mode"
         >
-            🌙
+            ☀️
         </button>
 
     </header>
 
 
-    <!-- ==========================================
+    <!-- =========================================
+         NAVIGATION
+    ========================================== -->
+
+    <nav
+        class="main-navigation"
+        aria-label="Main navigation"
+    >
+
+        <div class="nav-container">
+
+            <a
+                href="#dashboard"
+                class="nav-link active"
+            >
+                Dashboard
+            </a>
+
+
+            <a
+                href="#workouts"
+                class="nav-link"
+            >
+                Workouts
+            </a>
+
+
+            <a
+                href="#tracking"
+                class="nav-link"
+            >
+                Tracking
+            </a>
+
+
+            <a
+                href="#bmi"
+                class="nav-link"
+            >
+                BMI Calculator
+            </a>
+
+
+            <a
+                href="#summary"
+                class="nav-link"
+            >
+                Progress
+            </a>
+
+        </div>
+
+    </nav>
+
+
+    <!-- =========================================
          MAIN CONTENT
-    =========================================== -->
+    ========================================== -->
 
-    <main class="container">
+    <main
+        class="container"
+        id="dashboard"
+    >
 
 
-        <!-- ======================================
-             HERO SECTION
-        ======================================= -->
+        <!-- =====================================
+             HERO
+        ====================================== -->
 
         <section class="hero">
 
@@ -78,21 +144,21 @@
                     WELCOME BACK
                 </p>
 
+
                 <h2>
                     Build better habits,
                     <span>one day at a time.</span>
                 </h2>
 
+
                 <p class="hero-text">
-                    Track your workouts, hydration, steps
-                    and fitness progress from one simple
-                    dashboard.
+                    Track your workouts, hydration,
+                    steps and fitness progress from
+                    one simple dashboard.
                 </p>
 
             </div>
 
-
-            <!-- WEEKLY GOAL -->
 
             <div class="goal-card">
 
@@ -109,6 +175,7 @@
                         </small>
 
                     </div>
+
 
                     <span
                         class="goal-icon"
@@ -129,7 +196,9 @@
                     class="progress"
                     aria-label="Weekly fitness goal progress"
                 >
+
                     <div id="goalBar"></div>
+
                 </div>
 
 
@@ -142,17 +211,15 @@
         </section>
 
 
-        <!-- ======================================
-             STATISTICS SECTION
-        ======================================= -->
+        <!-- =====================================
+             STATISTICS
+        ====================================== -->
 
         <section
             class="stats-grid"
             aria-label="Fitness statistics"
         >
 
-
-            <!-- WORKOUTS -->
 
             <article class="stat-card">
 
@@ -177,8 +244,6 @@
 
             </article>
 
-
-            <!-- WATER -->
 
             <article class="stat-card">
 
@@ -210,8 +275,6 @@
             </article>
 
 
-            <!-- STEPS -->
-
             <article class="stat-card">
 
                 <div
@@ -235,8 +298,6 @@
 
             </article>
 
-
-            <!-- CALORIES -->
 
             <article class="stat-card">
 
@@ -264,18 +325,19 @@
         </section>
 
 
-        <!-- ======================================
-             MAIN DASHBOARD GRID
-        ======================================= -->
+        <!-- =====================================
+             ACTIVITY + TRACKING
+        ====================================== -->
 
         <section class="dashboard-grid">
 
 
-            <!-- ==================================
-                 ACTIVITY / WORKOUT PANEL
-            =================================== -->
+            <!-- WORKOUTS -->
 
-            <article class="panel activity-panel">
+            <article
+                class="panel activity-panel"
+                id="workouts"
+            >
 
                 <div class="panel-header">
 
@@ -302,8 +364,6 @@
 
                 </div>
 
-
-                <!-- WORKOUT LIST -->
 
                 <div
                     id="workoutList"
@@ -338,11 +398,12 @@
             </article>
 
 
-            <!-- ==================================
-                 DAILY TRACKING PANEL
-            =================================== -->
+            <!-- DAILY TRACKING -->
 
-            <article class="panel tracking-panel">
+            <article
+                class="panel tracking-panel"
+                id="tracking"
+            >
 
                 <div class="panel-header">
 
@@ -377,6 +438,7 @@
                                 💧
                             </div>
 
+
                             <div>
 
                                 <strong>
@@ -397,6 +459,7 @@
                             <strong id="waterDisplay">
                                 0 L
                             </strong>
+
 
                             <button
                                 type="button"
@@ -424,6 +487,7 @@
                                 👟
                             </div>
 
+
                             <div>
 
                                 <strong>
@@ -445,6 +509,7 @@
                                 0
                             </strong>
 
+
                             <button
                                 type="button"
                                 id="addStepsBtn"
@@ -464,18 +529,21 @@
         </section>
 
 
-        <!-- ======================================
-             SECONDARY DASHBOARD GRID
-        ======================================= -->
+        <!-- =====================================
+             BMI + SUMMARY
+        ====================================== -->
 
-        <section class="dashboard-grid secondary-grid">
+        <section
+            class="dashboard-grid secondary-grid"
+        >
 
 
-            <!-- ==================================
-                 BMI CALCULATOR
-            =================================== -->
+            <!-- BMI -->
 
-            <article class="panel">
+            <article
+                class="panel bmi-panel"
+                id="bmi"
+            >
 
                 <div class="panel-header">
 
@@ -494,51 +562,63 @@
                 </div>
 
 
-                <div class="form-grid">
+                <form id="bmiForm">
 
-                    <div class="form-group">
 
-                        <label for="height">
-                            Height (cm)
-                        </label>
+                    <div class="form-grid">
 
-                        <input
-                            type="number"
-                            id="height"
-                            placeholder="175"
-                            min="1"
-                            inputmode="decimal"
-                        >
+
+                        <div class="form-group">
+
+                            <label for="height">
+                                Height (cm)
+                            </label>
+
+
+                            <input
+                                type="number"
+                                id="height"
+                                placeholder="175"
+                                min="50"
+                                max="250"
+                                step="0.1"
+                                required
+                            >
+
+                        </div>
+
+
+                        <div class="form-group">
+
+                            <label for="weight">
+                                Weight (kg)
+                            </label>
+
+
+                            <input
+                                type="number"
+                                id="weight"
+                                placeholder="70"
+                                min="10"
+                                max="500"
+                                step="0.1"
+                                required
+                            >
+
+                        </div>
 
                     </div>
 
 
-                    <div class="form-group">
+                    <button
+                        type="submit"
+                        class="primary-btn"
+                        id="calculateBmiBtn"
+                    >
+                        Calculate BMI
+                    </button>
 
-                        <label for="weight">
-                            Weight (kg)
-                        </label>
-
-                        <input
-                            type="number"
-                            id="weight"
-                            placeholder="70"
-                            min="1"
-                            inputmode="decimal"
-                        >
-
-                    </div>
-
-                </div>
-
-
-                <button
-                    type="button"
-                    class="primary-btn"
-                    id="calculateBmiBtn"
-                >
-                    Calculate BMI
-                </button>
+                </form>
 
 
                 <div
@@ -546,18 +626,27 @@
                     class="bmi-result"
                     aria-live="polite"
                 >
-                    Enter your details to calculate
-                    your BMI.
+                    Enter your height and weight
+                    to calculate your BMI.
+                </div>
+
+
+                <div
+                    id="bmiCategory"
+                    class="bmi-category"
+                    aria-live="polite"
+                >
                 </div>
 
             </article>
 
 
-            <!-- ==================================
-                 FITNESS SUMMARY
-            =================================== -->
+            <!-- SUMMARY -->
 
-            <article class="panel">
+            <article
+                class="panel"
+                id="summary"
+            >
 
                 <div class="panel-header">
 
@@ -626,9 +715,9 @@
     </main>
 
 
-    <!-- ==========================================
-         ADD WORKOUT MODAL
-    =========================================== -->
+    <!-- =========================================
+         WORKOUT MODAL
+    ========================================== -->
 
     <div
         class="modal-overlay"
@@ -670,12 +759,8 @@
             </div>
 
 
-            <!-- WORKOUT FORM -->
-
             <form id="workoutForm">
 
-
-                <!-- WORKOUT TYPE -->
 
                 <div class="form-group">
 
@@ -725,8 +810,6 @@
                 </div>
 
 
-                <!-- DURATION -->
-
                 <div class="form-group">
 
                     <label for="workoutDuration">
@@ -743,8 +826,6 @@
 
                 </div>
 
-
-                <!-- CALORIES -->
 
                 <div class="form-group">
 
@@ -763,8 +844,6 @@
                 </div>
 
 
-                <!-- DATE -->
-
                 <div class="form-group">
 
                     <label for="workoutDate">
@@ -780,8 +859,6 @@
                 </div>
 
 
-                <!-- BUTTONS -->
-
                 <div class="modal-actions">
 
                     <button
@@ -791,6 +868,7 @@
                     >
                         Cancel
                     </button>
+
 
                     <button
                         type="submit"
@@ -808,14 +886,18 @@
     </div>
 
 
-    <!-- ==========================================
+    <!-- =========================================
          JAVASCRIPT
-    =========================================== -->
+    ========================================== -->
 
     <script src="js/storage.js"></script>
+
     <script src="js/workouts.js"></script>
+
     <script src="js/dashboard.js"></script>
+
     <script src="js/app.js"></script>
+
 
 </body>
 
