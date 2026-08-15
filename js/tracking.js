@@ -1,481 +1,67 @@
 /* ==========================================
-   FITBOD
-   WATER AND STEPS TRACKING
-   
+   FITBOD TRACKING MANAGER (WATER & STEPS)
+   ISSUE #9
 ========================================== */
 
-
-/* ==========================================
-   TRACKING SETTINGS
-========================================== */
-
-const WATER_INCREMENT =
-    0.25;
-
-const WATER_GOAL =
-    2.5;
-
-const STEPS_INCREMENT =
-    500;
-
-const STEPS_GOAL =
-    10000;
-
-
-/* ==========================================
-   DOM ELEMENTS
-========================================== */
-
-const addWaterBtn =
-    document.getElementById(
-        "addWaterBtn"
-    );
-
-
-const addStepsBtn =
-    document.getElementById(
-        "addStepsBtn"
-    );
-
-
-const waterDisplay =
-    document.getElementById(
-        "waterDisplay"
-    );
-
-
-const stepDisplay =
-    document.getElementById(
-        "stepDisplay"
-    );
-
-
-const waterCount =
-    document.getElementById(
-        "waterCount"
-    );
-
-
-const stepsCount =
-    document.getElementById(
-        "stepsCount"
-    );
-
-
-const waterProgressBar =
-    document.getElementById(
-        "waterProgressBar"
-    );
-
-
-const stepsProgressBar =
-    document.getElementById(
-        "stepsProgressBar"
-    );
-
-
-const waterProgressText =
-    document.getElementById(
-        "waterProgressText"
-    );
-
-
-const stepsProgressText =
-    document.getElementById(
-        "stepsProgressText"
-    );
-
-
-/* ==========================================
-   GET TODAY
-   USE LOCAL DATE
-========================================== */
-
-function getToday() {
-
-    const today =
-        new Date();
-
-
-    const year =
-        today.getFullYear();
-
-
-    const month =
-        String(
-            today.getMonth() + 1
-        ).padStart(
-            2,
-            "0"
-        );
-
-
-    const day =
-        String(
-            today.getDate()
-        ).padStart(
-            2,
-            "0"
-        );
-
-
-    return `${year}-${month}-${day}`;
-
+function addWater(amount) {
+    let currentWater = typeof loadWater === "function" ? loadWater() : 0;
+    currentWater += amount;
+    if (typeof saveWater === "function") {
+        saveWater(currentWater);
+    }
+    updateTrackingDisplay();
 }
 
-
-/* ==========================================
-   INITIALISE DAILY TRACKING
-========================================== */
-
-function initialiseTracking() {
-
-    const today =
-        getToday();
-
-
-    const savedDate =
-        loadTrackingDate();
-
-
-    /*
-       If there is no saved date
-       or the date has changed,
-       start a fresh tracking day.
-    */
-
-    if (
-        savedDate !== today
-    ) {
-
+function resetWater() {
+    if (typeof saveWater === "function") {
         saveWater(0);
-
-        saveSteps(0);
-
-        saveTrackingDate(
-            today
-        );
-
     }
-
-
     updateTrackingDisplay();
-
 }
 
-
-/* ==========================================
-   ADD WATER
-========================================== */
-
-function addWater() {
-
-    let water =
-        loadWater();
-
-
-    water +=
-        WATER_INCREMENT;
-
-
-    /*
-       Prevent unrealistic values.
-    */
-
-    if (water > 20) {
-
-        water = 20;
-
+function updateSteps(count) {
+    const stepCount = Math.max(0, Number(count) || 0);
+    if (typeof saveSteps === "function") {
+        saveSteps(stepCount);
     }
-
-
-    /*
-       Save through storage.js.
-    */
-
-    saveWater(
-        water
-    );
-
-
     updateTrackingDisplay();
-
 }
-
-
-/* ==========================================
-   ADD STEPS
-========================================== */
-
-function addSteps() {
-
-    let steps =
-        loadSteps();
-
-
-    steps +=
-        STEPS_INCREMENT;
-
-
-    /*
-       Prevent unrealistic values.
-    */
-
-    if (steps > 100000) {
-
-        steps = 100000;
-
-    }
-
-
-    /*
-       Save through storage.js.
-    */
-
-    saveSteps(
-        steps
-    );
-
-
-    updateTrackingDisplay();
-
-}
-
-
-/* ==========================================
-   WATER DISPLAY
-========================================== */
-
-function updateWaterDisplay(
-    water
-) {
-
-    if (waterDisplay) {
-
-        waterDisplay.textContent =
-            `${water.toFixed(2)} L`;
-
-    }
-
-
-    if (waterCount) {
-
-        waterCount.textContent =
-            water.toFixed(2);
-
-    }
-
-
-    const percentage =
-        Math.min(
-            (
-                water /
-                WATER_GOAL
-            ) * 100,
-            100
-        );
-
-
-    if (waterProgressBar) {
-
-        waterProgressBar.style.width =
-            `${percentage}%`;
-
-    }
-
-
-    if (waterProgressText) {
-
-        waterProgressText.textContent =
-            `${Math.round(
-                percentage
-            )}% of daily goal`;
-
-    }
-
-}
-
-
-/* ==========================================
-   STEPS DISPLAY
-========================================== */
-
-function updateStepsDisplay(
-    steps
-) {
-
-    if (stepDisplay) {
-
-        stepDisplay.textContent =
-            steps.toLocaleString();
-
-    }
-
-
-    if (stepsCount) {
-
-        stepsCount.textContent =
-            steps.toLocaleString();
-
-    }
-
-
-    const percentage =
-        Math.min(
-            (
-                steps /
-                STEPS_GOAL
-            ) * 100,
-            100
-        );
-
-
-    if (stepsProgressBar) {
-
-        stepsProgressBar.style.width =
-            `${percentage}%`;
-
-    }
-
-
-    if (stepsProgressText) {
-
-        stepsProgressText.textContent =
-            `${Math.round(
-                percentage
-            )}% of daily goal`;
-
-    }
-
-}
-
-
-/* ==========================================
-   UPDATE OVERALL GOAL
-========================================== */
-
-function updateOverallGoal(
-    water,
-    steps
-) {
-
-    const waterPercentage =
-        Math.min(
-            water /
-            WATER_GOAL,
-            1
-        );
-
-
-    const stepsPercentage =
-        Math.min(
-            steps /
-            STEPS_GOAL,
-            1
-        );
-
-
-    const overallPercentage =
-        (
-            waterPercentage +
-            stepsPercentage
-        ) / 2;
-
-
-    const percentage =
-        Math.round(
-            overallPercentage * 100
-        );
-
-
-    const goalProgress =
-        document.getElementById(
-            "goalProgress"
-        );
-
-
-    const goalBar =
-        document.getElementById(
-            "goalBar"
-        );
-
-
-    if (goalProgress) {
-
-        goalProgress.textContent =
-            `${percentage}%`;
-
-    }
-
-
-    if (goalBar) {
-
-        goalBar.style.width =
-            `${percentage}%`;
-
-    }
-
-}
-
-
-/* ==========================================
-   UPDATE EVERYTHING
-========================================== */
 
 function updateTrackingDisplay() {
+    const water = typeof loadWater === "function" ? loadWater() : 0;
+    const steps = typeof loadSteps === "function" ? loadSteps() : 0;
 
-    const water =
-        loadWater();
+    const waterDisplay = document.getElementById("waterDisplay");
+    if (waterDisplay) {
+        waterDisplay.textContent = `${typeof water === "number" ? water.toFixed(2) : water} L`;
+    }
 
+    const stepsDisplay = document.getElementById("stepDisplay");
+    if (stepsDisplay) {
+        stepsDisplay.textContent = steps.toLocaleString();
+    }
 
-    const steps =
-        loadSteps();
-
-
-    updateWaterDisplay(
-        water
-    );
-
-
-    updateStepsDisplay(
-        steps
-    );
-
-
-    updateOverallGoal(
-        water,
-        steps
-    );
-
+    // Refresh Dashboard analytics & counters in real-time
+    if (typeof renderDashboard === "function") {
+        renderDashboard();
+    }
 }
 
+document.addEventListener("DOMContentLoaded", () => {
+    updateTrackingDisplay();
 
-/* ==========================================
-   BUTTON EVENTS
-========================================== */
+    const addWaterBtn = document.getElementById("addWaterBtn");
+    if (addWaterBtn) {
+        addWaterBtn.addEventListener("click", () => addWater(0.25));
+    }
 
-if (addWaterBtn) {
+    const resetWaterBtn = document.getElementById("resetWaterBtn");
+    if (resetWaterBtn) {
+        resetWaterBtn.addEventListener("click", resetWater);
+    }
 
-    addWaterBtn.addEventListener(
-        "click",
-        addWater
-    );
-
-}
-
-
-if (addStepsBtn) {
-
-    addStepsBtn.addEventListener(
-        "click",
-        addSteps
-    );
-
-}
-
-
-/* ==========================================
-   START
-========================================== */
-
-initialiseTracking();
+    const stepsInput = document.getElementById("stepsInput");
+    if (stepsInput) {
+        stepsInput.addEventListener("input", (e) => updateSteps(e.target.value));
+    }
+});
