@@ -1,612 +1,345 @@
-/* =========================================
-   FITBOD WORKOUT TRACKING
-   ISSUE #5
-========================================= */
-
-const workoutForm = document.getElementById("workoutForm");
-const workoutList = document.getElementById("workoutList");
-
-const addWorkoutBtn = document.getElementById("addWorkoutBtn");
-const closeWorkoutModal = document.getElementById("closeWorkoutModal");
-const cancelWorkoutBtn = document.getElementById("cancelWorkoutBtn");
-
-const workoutModal = document.getElementById("workoutModal");
-
-const workoutCount = document.getElementById("workoutCount");
-const calorieCount = document.getElementById("calorieCount");
-const summaryProgress = document.getElementById("summaryProgress");
-
-const goalProgress = document.getElementById("goalProgress");
-const goalBar = document.getElementById("goalBar");
+/* ==========================================
+   FITBOD
+   WATER AND STEPS TRACKING
+   
+========================================== */
 
 
-/* =========================================
-   LOAD SAVED WORKOUTS
-========================================= */
+/* ==========================================
+   TRACKING SETTINGS
+========================================== */
 
-let workouts =
-    JSON.parse(localStorage.getItem("fitbodWorkouts")) || [];
+const WATER_INCREMENT = 0.25;
+
+const WATER_GOAL = 2.5;
+
+const STEPS_INCREMENT = 500;
+
+const STEPS_GOAL = 10000;
 
 
-/* =========================================
-   OPEN MODAL
-========================================= */
+/* ==========================================
+   DOM ELEMENTS
+========================================== */
 
-function openWorkoutModal() {
-
-    if (!workoutModal) {
-        return;
-    }
-
-    workoutModal.classList.add("active");
-
-    workoutModal.setAttribute(
-        "aria-hidden",
-        "false"
+const addWaterBtn =
+    document.getElementById(
+        "addWaterBtn"
     );
 
-    const dateInput =
-        document.getElementById("workoutDate");
 
-    if (dateInput && !dateInput.value) {
+const addStepsBtn =
+    document.getElementById(
+        "addStepsBtn"
+    );
 
-        dateInput.value =
-            new Date().toISOString().split("T")[0];
 
-    }
+const waterDisplay =
+    document.getElementById(
+        "waterDisplay"
+    );
+
+
+const stepDisplay =
+    document.getElementById(
+        "stepDisplay"
+    );
+
+
+const waterCount =
+    document.getElementById(
+        "waterCount"
+    );
+
+
+const stepsCount =
+    document.getElementById(
+        "stepsCount"
+    );
+
+
+const waterProgressBar =
+    document.getElementById(
+        "waterProgressBar"
+    );
+
+
+const stepsProgressBar =
+    document.getElementById(
+        "stepsProgressBar"
+    );
+
+
+const waterProgressText =
+    document.getElementById(
+        "waterProgressText"
+    );
+
+
+const stepsProgressText =
+    document.getElementById(
+        "stepsProgressText"
+    );
+
+
+/* ==========================================
+   GET TODAY
+========================================== */
+
+function getToday() {
+
+    const today =
+        new Date();
+
+    return today
+        .toISOString()
+        .split("T")[0];
 
 }
 
 
-/* =========================================
-   CLOSE MODAL
-========================================= */
+/* ==========================================
+   INITIALISE DAILY TRACKING
+========================================== */
 
-function closeWorkoutForm() {
+function initialiseTracking() {
 
-    if (!workoutModal) {
-        return;
-    }
+    const today =
+        getToday();
 
-    workoutModal.classList.remove("active");
 
-    workoutModal.setAttribute(
-        "aria-hidden",
-        "true"
-    );
+    const savedDate =
+        loadTrackingDate();
 
-}
 
+    /*
+       If this is a new day,
+       reset water and steps.
+    */
 
-/* =========================================
-   BUTTON EVENTS
-========================================= */
+    if (savedDate !== today) {
 
-if (addWorkoutBtn) {
+        saveWater(0);
 
-    addWorkoutBtn.addEventListener(
-        "click",
-        openWorkoutModal
-    );
+        saveSteps(0);
 
-}
-
-
-if (closeWorkoutModal) {
-
-    closeWorkoutModal.addEventListener(
-        "click",
-        closeWorkoutForm
-    );
-
-}
-
-
-if (cancelWorkoutBtn) {
-
-    cancelWorkoutBtn.addEventListener(
-        "click",
-        closeWorkoutForm
-    );
-
-}
-
-
-/* =========================================
-   CLOSE WHEN CLICKING OUTSIDE
-========================================= */
-
-if (workoutModal) {
-
-    workoutModal.addEventListener(
-        "click",
-        function (event) {
-
-            if (event.target === workoutModal) {
-
-                closeWorkoutForm();
-
-            }
-
-        }
-    );
-
-}
-
-
-/* =========================================
-   ADD WORKOUT
-========================================= */
-
-if (workoutForm) {
-
-    workoutForm.addEventListener(
-        "submit",
-        function (event) {
-
-            event.preventDefault();
-
-
-            const name =
-                document.getElementById(
-                    "workoutName"
-                ).value;
-
-
-            const duration =
-                Number(
-                    document.getElementById(
-                        "workoutDuration"
-                    ).value
-                );
-
-
-            const calories =
-                Number(
-                    document.getElementById(
-                        "workoutCalories"
-                    ).value
-                );
-
-
-            const date =
-                document.getElementById(
-                    "workoutDate"
-                ).value;
-
-
-            /* VALIDATION */
-
-            if (
-                !name ||
-                duration <= 0 ||
-                calories <= 0 ||
-                !date
-            ) {
-
-                alert(
-                    "Please enter valid workout details."
-                );
-
-                return;
-
-            }
-
-
-            /* CREATE WORKOUT */
-
-            const workout = {
-
-                id: Date.now(),
-
-                name: name,
-
-                duration: duration,
-
-                calories: calories,
-
-                date: date,
-
-                completed: false
-
-            };
-
-
-            /* ADD TO ARRAY */
-
-            workouts.push(workout);
-
-
-            /* SAVE */
-
-            saveWorkouts();
-
-
-            /* UPDATE DISPLAY */
-
-            renderWorkouts();
-
-            updateWorkoutStatistics();
-
-
-            /* RESET FORM */
-
-            workoutForm.reset();
-
-
-            /* CLOSE MODAL */
-
-            closeWorkoutForm();
-
-        }
-    );
-
-}
-
-
-/* =========================================
-   SAVE WORKOUTS
-========================================= */
-
-function saveWorkouts() {
-
-    localStorage.setItem(
-        "fitbodWorkouts",
-        JSON.stringify(workouts)
-    );
-
-}
-
-
-/* =========================================
-   RENDER WORKOUTS
-========================================= */
-
-function renderWorkouts() {
-
-    if (!workoutList) {
-        return;
-    }
-
-
-    workoutList.innerHTML = "";
-
-
-    if (workouts.length === 0) {
-
-        workoutList.innerHTML = `
-
-            <div
-                class="empty-state"
-                id="emptyWorkoutState"
-            >
-
-                <div
-                    class="empty-icon"
-                    aria-hidden="true"
-                >
-                    🏃
-                </div>
-
-                <strong>
-                    No workouts yet
-                </strong>
-
-                <p>
-                    Add your first workout
-                    to start tracking.
-                </p>
-
-            </div>
-
-        `;
-
-        return;
-
-    }
-
-
-    /* NEWEST FIRST */
-
-    const sortedWorkouts =
-        [...workouts].reverse();
-
-
-    sortedWorkouts.forEach(
-        function (workout) {
-
-
-            const workoutItem =
-                document.createElement("div");
-
-
-            workoutItem.className =
-                "workout-item";
-
-
-            if (workout.completed) {
-
-                workoutItem.classList.add(
-                    "completed"
-                );
-
-            }
-
-
-            workoutItem.innerHTML = `
-
-                <div class="workout-information">
-
-                    <div class="workout-icon">
-                        🏋️
-                    </div>
-
-                    <div>
-
-                        <strong>
-                            ${escapeHTML(workout.name)}
-                        </strong>
-
-                        <p>
-                            ${workout.date}
-                        </p>
-
-                    </div>
-
-                </div>
-
-
-                <div class="workout-details">
-
-                    <span>
-                        ${workout.duration} min
-                    </span>
-
-                    <span>
-                        🔥 ${workout.calories} kcal
-                    </span>
-
-                </div>
-
-
-                <div class="workout-actions">
-
-                    <button
-                        type="button"
-                        class="complete-workout-btn"
-                        data-id="${workout.id}"
-                    >
-                        ${
-                            workout.completed
-                                ? "Completed"
-                                : "Complete"
-                        }
-                    </button>
-
-
-                    <button
-                        type="button"
-                        class="delete-workout-btn"
-                        data-id="${workout.id}"
-                    >
-                        Delete
-                    </button>
-
-                </div>
-
-            `;
-
-
-            workoutList.appendChild(
-                workoutItem
-            );
-
-        }
-    );
-
-
-    attachWorkoutActions();
-
-}
-
-
-/* =========================================
-   WORKOUT BUTTON EVENTS
-========================================= */
-
-function attachWorkoutActions() {
-
-    const completeButtons =
-        document.querySelectorAll(
-            ".complete-workout-btn"
+        saveTrackingDate(
+            today
         );
 
-
-    const deleteButtons =
-        document.querySelectorAll(
-            ".delete-workout-btn"
-        );
+    }
 
 
-    completeButtons.forEach(
-        function (button) {
+    updateTrackingDisplay();
 
-            button.addEventListener(
-                "click",
-                function () {
+}
 
-                    const id =
-                        Number(
-                            button.dataset.id
-                        );
 
-                    toggleWorkout(id);
+/* ==========================================
+   ADD WATER
+========================================== */
 
-                }
-            );
+function addWater() {
 
-        }
+    let water =
+        loadWater();
+
+
+    water +=
+        WATER_INCREMENT;
+
+
+    if (water > 20) {
+
+        water = 20;
+
+    }
+
+
+    saveWater(
+        water
     );
 
 
-    deleteButtons.forEach(
-        function (button) {
+    updateTrackingDisplay();
 
-            button.addEventListener(
-                "click",
-                function () {
+}
 
-                    const id =
-                        Number(
-                            button.dataset.id
-                        );
 
-                    deleteWorkout(id);
+/* ==========================================
+   ADD STEPS
+========================================== */
 
-                }
-            );
+function addSteps() {
 
-        }
+    let steps =
+        loadSteps();
+
+
+    steps +=
+        STEPS_INCREMENT;
+
+
+    if (steps > 100000) {
+
+        steps = 100000;
+
+    }
+
+
+    saveSteps(
+        steps
     );
 
-}
 
-
-/* =========================================
-   COMPLETE WORKOUT
-========================================= */
-
-function toggleWorkout(id) {
-
-    workouts =
-        workouts.map(
-            function (workout) {
-
-                if (workout.id === id) {
-
-                    return {
-
-                        ...workout,
-
-                        completed:
-                            !workout.completed
-
-                    };
-
-                }
-
-                return workout;
-
-            }
-        );
-
-
-    saveWorkouts();
-
-    renderWorkouts();
-
-    updateWorkoutStatistics();
+    updateTrackingDisplay();
 
 }
 
 
-/* =========================================
-   DELETE WORKOUT
-========================================= */
+/* ==========================================
+   WATER DISPLAY
+========================================== */
 
-function deleteWorkout(id) {
+function updateWaterDisplay(
+    water
+) {
 
-    const confirmed =
-        confirm(
-            "Are you sure you want to delete this workout?"
-        );
+    if (waterDisplay) {
 
-
-    if (!confirmed) {
-        return;
-    }
-
-
-    workouts =
-        workouts.filter(
-            function (workout) {
-
-                return workout.id !== id;
-
-            }
-        );
-
-
-    saveWorkouts();
-
-    renderWorkouts();
-
-    updateWorkoutStatistics();
-
-}
-
-
-/* =========================================
-   UPDATE DASHBOARD STATISTICS
-========================================= */
-
-function updateWorkoutStatistics() {
-
-    const total =
-        workouts.length;
-
-
-    const calories =
-        workouts.reduce(
-            function (sum, workout) {
-
-                return sum + workout.calories;
-
-            },
-            0
-        );
-
-
-    /* WORKOUT COUNT */
-
-    if (workoutCount) {
-
-        workoutCount.textContent =
-            total;
+        waterDisplay.textContent =
+            `${water.toFixed(2)} L`;
 
     }
 
 
-    /* CALORIES */
+    if (waterCount) {
 
-    if (calorieCount) {
-
-        calorieCount.textContent =
-            calories;
+        waterCount.textContent =
+            water.toFixed(2);
 
     }
 
-
-    /* FITNESS SUMMARY */
-
-    if (summaryProgress) {
-
-        summaryProgress.textContent =
-            `${total} sessions`;
-
-    }
-
-
-    /* WEEKLY GOAL */
-
-    const weeklyGoal = 5;
 
     const percentage =
         Math.min(
-            Math.round(
-                (total / weeklyGoal) * 100
-            ),
+            (water / WATER_GOAL) * 100,
             100
+        );
+
+
+    if (waterProgressBar) {
+
+        waterProgressBar.style.width =
+            `${percentage}%`;
+
+    }
+
+
+    if (waterProgressText) {
+
+        waterProgressText.textContent =
+            `${Math.round(percentage)}% of daily goal`;
+
+    }
+
+}
+
+
+/* ==========================================
+   STEPS DISPLAY
+========================================== */
+
+function updateStepsDisplay(
+    steps
+) {
+
+    if (stepDisplay) {
+
+        stepDisplay.textContent =
+            steps.toLocaleString();
+
+    }
+
+
+    if (stepsCount) {
+
+        stepsCount.textContent =
+            steps.toLocaleString();
+
+    }
+
+
+    const percentage =
+        Math.min(
+            (steps / STEPS_GOAL) * 100,
+            100
+        );
+
+
+    if (stepsProgressBar) {
+
+        stepsProgressBar.style.width =
+            `${percentage}%`;
+
+    }
+
+
+    if (stepsProgressText) {
+
+        stepsProgressText.textContent =
+            `${Math.round(percentage)}% of daily goal`;
+
+    }
+
+}
+
+
+/* ==========================================
+   UPDATE OVERALL GOAL
+========================================== */
+
+function updateOverallGoal(
+    water,
+    steps
+) {
+
+    const waterPercentage =
+        Math.min(
+            water / WATER_GOAL,
+            1
+        );
+
+
+    const stepsPercentage =
+        Math.min(
+            steps / STEPS_GOAL,
+            1
+        );
+
+
+    const overallPercentage =
+        (
+            waterPercentage +
+            stepsPercentage
+        ) / 2;
+
+
+    const percentage =
+        Math.round(
+            overallPercentage * 100
+        );
+
+
+    const goalProgress =
+        document.getElementById(
+            "goalProgress"
+        );
+
+
+    const goalBar =
+        document.getElementById(
+            "goalBar"
         );
 
 
@@ -628,27 +361,64 @@ function updateWorkoutStatistics() {
 }
 
 
-/* =========================================
-   HTML ESCAPING
-========================================= */
+/* ==========================================
+   UPDATE EVERYTHING
+========================================== */
 
-function escapeHTML(value) {
+function updateTrackingDisplay() {
 
-    const element =
-        document.createElement("div");
+    const water =
+        loadWater();
 
-    element.textContent =
-        value;
 
-    return element.innerHTML;
+    const steps =
+        loadSteps();
+
+
+    updateWaterDisplay(
+        water
+    );
+
+
+    updateStepsDisplay(
+        steps
+    );
+
+
+    updateOverallGoal(
+        water,
+        steps
+    );
 
 }
 
 
-/* =========================================
-   INITIALISE
-========================================= */
+/* ==========================================
+   BUTTON EVENTS
+========================================== */
 
-renderWorkouts();
+if (addWaterBtn) {
 
-updateWorkoutStatistics();
+    addWaterBtn.addEventListener(
+        "click",
+        addWater
+    );
+
+}
+
+
+if (addStepsBtn) {
+
+    addStepsBtn.addEventListener(
+        "click",
+        addSteps
+    );
+
+}
+
+
+/* ==========================================
+   START
+========================================== */
+
+initialiseTracking();

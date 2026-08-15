@@ -1,7 +1,7 @@
 /* ==========================================
    FITBOD
    WATER AND STEPS TRACKING
-   ISSUE #7
+   
 ========================================== */
 
 
@@ -9,27 +9,17 @@
    TRACKING SETTINGS
 ========================================== */
 
-const WATER_INCREMENT = 0.25;
+const WATER_INCREMENT =
+    0.25;
 
-const WATER_GOAL = 2.5;
+const WATER_GOAL =
+    2.5;
 
-const STEPS_INCREMENT = 500;
+const STEPS_INCREMENT =
+    500;
 
-const STEPS_GOAL = 10000;
-
-
-/* ==========================================
-   STORAGE KEYS
-========================================== */
-
-const WATER_STORAGE_KEY =
-    "fitbodDailyWater";
-
-const STEPS_STORAGE_KEY =
-    "fitbodDailySteps";
-
-const TRACKING_DATE_KEY =
-    "fitbodTrackingDate";
+const STEPS_GOAL =
+    10000;
 
 
 /* ==========================================
@@ -97,7 +87,8 @@ const stepsProgressText =
 
 
 /* ==========================================
-   GET TODAY'S DATE
+   GET TODAY
+   USE LOCAL DATE
 ========================================== */
 
 function getToday() {
@@ -105,9 +96,30 @@ function getToday() {
     const today =
         new Date();
 
-    return today
-        .toISOString()
-        .split("T")[0];
+
+    const year =
+        today.getFullYear();
+
+
+    const month =
+        String(
+            today.getMonth() + 1
+        ).padStart(
+            2,
+            "0"
+        );
+
+
+    const day =
+        String(
+            today.getDate()
+        ).padStart(
+            2,
+            "0"
+        );
+
+
+    return `${year}-${month}-${day}`;
 
 }
 
@@ -123,32 +135,24 @@ function initialiseTracking() {
 
 
     const savedDate =
-        localStorage.getItem(
-            TRACKING_DATE_KEY
-        );
+        loadTrackingDate();
 
 
     /*
-       If the saved date is different
-       from today, start a new day.
+       If there is no saved date
+       or the date has changed,
+       start a fresh tracking day.
     */
 
-    if (savedDate !== today) {
+    if (
+        savedDate !== today
+    ) {
 
-        localStorage.setItem(
-            WATER_STORAGE_KEY,
-            "0"
-        );
+        saveWater(0);
 
+        saveSteps(0);
 
-        localStorage.setItem(
-            STEPS_STORAGE_KEY,
-            "0"
-        );
-
-
-        localStorage.setItem(
-            TRACKING_DATE_KEY,
+        saveTrackingDate(
             today
         );
 
@@ -161,65 +165,36 @@ function initialiseTracking() {
 
 
 /* ==========================================
-   GET WATER
-========================================== */
-
-function getWater() {
-
-    return Number(
-        localStorage.getItem(
-            WATER_STORAGE_KEY
-        )
-    ) || 0;
-
-}
-
-
-/* ==========================================
-   GET STEPS
-========================================== */
-
-function getSteps() {
-
-    return Number(
-        localStorage.getItem(
-            STEPS_STORAGE_KEY
-        )
-    ) || 0;
-
-}
-
-
-/* ==========================================
    ADD WATER
 ========================================== */
 
 function addWater() {
 
-    let currentWater =
-        getWater();
+    let water =
+        loadWater();
 
 
-    currentWater +=
+    water +=
         WATER_INCREMENT;
 
 
     /*
        Prevent unrealistic values.
-       20 litres is more than enough
-       for this simple tracker.
     */
 
-    if (currentWater > 20) {
+    if (water > 20) {
 
-        currentWater = 20;
+        water = 20;
 
     }
 
 
-    localStorage.setItem(
-        WATER_STORAGE_KEY,
-        currentWater.toString()
+    /*
+       Save through storage.js.
+    */
+
+    saveWater(
+        water
     );
 
 
@@ -234,29 +209,31 @@ function addWater() {
 
 function addSteps() {
 
-    let currentSteps =
-        getSteps();
+    let steps =
+        loadSteps();
 
 
-    currentSteps +=
+    steps +=
         STEPS_INCREMENT;
 
 
     /*
-       Keep the tracker within
-       a realistic daily range.
+       Prevent unrealistic values.
     */
 
-    if (currentSteps > 100000) {
+    if (steps > 100000) {
 
-        currentSteps = 100000;
+        steps = 100000;
 
     }
 
 
-    localStorage.setItem(
-        STEPS_STORAGE_KEY,
-        currentSteps.toString()
+    /*
+       Save through storage.js.
+    */
+
+    saveSteps(
+        steps
     );
 
 
@@ -266,7 +243,7 @@ function addSteps() {
 
 
 /* ==========================================
-   UPDATE WATER DISPLAY
+   WATER DISPLAY
 ========================================== */
 
 function updateWaterDisplay(
@@ -291,7 +268,10 @@ function updateWaterDisplay(
 
     const percentage =
         Math.min(
-            (water / WATER_GOAL) * 100,
+            (
+                water /
+                WATER_GOAL
+            ) * 100,
             100
         );
 
@@ -307,7 +287,9 @@ function updateWaterDisplay(
     if (waterProgressText) {
 
         waterProgressText.textContent =
-            `${Math.round(percentage)}% of daily goal`;
+            `${Math.round(
+                percentage
+            )}% of daily goal`;
 
     }
 
@@ -315,7 +297,7 @@ function updateWaterDisplay(
 
 
 /* ==========================================
-   UPDATE STEPS DISPLAY
+   STEPS DISPLAY
 ========================================== */
 
 function updateStepsDisplay(
@@ -340,7 +322,10 @@ function updateStepsDisplay(
 
     const percentage =
         Math.min(
-            (steps / STEPS_GOAL) * 100,
+            (
+                steps /
+                STEPS_GOAL
+            ) * 100,
             100
         );
 
@@ -356,7 +341,9 @@ function updateStepsDisplay(
     if (stepsProgressText) {
 
         stepsProgressText.textContent =
-            `${Math.round(percentage)}% of daily goal`;
+            `${Math.round(
+                percentage
+            )}% of daily goal`;
 
     }
 
@@ -364,39 +351,7 @@ function updateStepsDisplay(
 
 
 /* ==========================================
-   UPDATE ALL TRACKING
-========================================== */
-
-function updateTrackingDisplay() {
-
-    const water =
-        getWater();
-
-
-    const steps =
-        getSteps();
-
-
-    updateWaterDisplay(
-        water
-    );
-
-
-    updateStepsDisplay(
-        steps
-    );
-
-
-    updateOverallGoal(
-        water,
-        steps
-    );
-
-}
-
-
-/* ==========================================
-   UPDATE OVERALL FITNESS GOAL
+   UPDATE OVERALL GOAL
 ========================================== */
 
 function updateOverallGoal(
@@ -406,21 +361,19 @@ function updateOverallGoal(
 
     const waterPercentage =
         Math.min(
-            water / WATER_GOAL,
+            water /
+            WATER_GOAL,
             1
         );
 
 
     const stepsPercentage =
         Math.min(
-            steps / STEPS_GOAL,
+            steps /
+            STEPS_GOAL,
             1
         );
 
-
-    /*
-       Average the two daily goals.
-    */
 
     const overallPercentage =
         (
@@ -466,7 +419,39 @@ function updateOverallGoal(
 
 
 /* ==========================================
-   WATER BUTTON EVENT
+   UPDATE EVERYTHING
+========================================== */
+
+function updateTrackingDisplay() {
+
+    const water =
+        loadWater();
+
+
+    const steps =
+        loadSteps();
+
+
+    updateWaterDisplay(
+        water
+    );
+
+
+    updateStepsDisplay(
+        steps
+    );
+
+
+    updateOverallGoal(
+        water,
+        steps
+    );
+
+}
+
+
+/* ==========================================
+   BUTTON EVENTS
 ========================================== */
 
 if (addWaterBtn) {
@@ -479,10 +464,6 @@ if (addWaterBtn) {
 }
 
 
-/* ==========================================
-   STEPS BUTTON EVENT
-========================================== */
-
 if (addStepsBtn) {
 
     addStepsBtn.addEventListener(
@@ -494,7 +475,7 @@ if (addStepsBtn) {
 
 
 /* ==========================================
-   START TRACKING
+   START
 ========================================== */
 
 initialiseTracking();
