@@ -343,3 +343,105 @@ function loadBMI() {
     );
 
 }
+
+/* ==========================================
+   FITNESS ANALYTICS HELPERS (ISSUE #9)
+========================================== */
+
+function getWorkoutAnalytics() {
+    const workouts = loadWorkouts() || [];
+
+    if (workouts.length === 0) {
+        return {
+            totalWorkouts: 0,
+            totalCalories: 0,
+            totalDuration: 0,
+            avgCaloriesPerWorkout: 0,
+            avgDurationPerWorkout: 0,
+            mostFrequentType: "N/A",
+            weeklyCalories: 0,
+            workoutStreak: 0
+        };
+    }
+
+    const totalWorkouts = workouts.length;
+
+    const totalCalories = workouts.reduce(
+        (sum, w) => sum + (Number(w.calories) || 0), 0
+    );
+
+    const totalDuration = workouts.reduce(
+        (sum, w) => sum + (Number(w.duration) || 0), 0
+    );
+
+    const avgCaloriesPerWorkout = Math.round(totalCalories / totalWorkouts);
+    const avgDurationPerWorkout = Math.round(totalDuration / totalWorkouts);
+
+    // Most Frequent Workout Type
+    const typeCounts = {};
+    workouts.forEach(w => {
+        const type = w.name ? w.name.trim() : "Other";
+        typeCounts[type] = (typeCounts[type] || 0) + 1;
+    });
+
+    let mostFrequentType = "N/A";
+    let maxCount = 0;
+    Object.entries(typeCounts).forEach(([type, count]) => {
+        if (count > maxCount) {
+            maxCount = count;
+            mostFrequentType = type;
+        }
+    });
+
+    // Calculate Last 7 Days Calories
+    const sevenDaysAgo = new Date();
+    sevenDaysAgo.setDate(sevenDaysAgo.getDate() - 7);
+
+    const weeklyCalories = workouts.reduce((sum, w) => {
+        const workoutDate = new Date(w.date);
+        if (!isNaN(workoutDate) && workoutDate >= sevenDaysAgo) {
+            return sum + (Number(w.calories) || 0);
+        }
+        return sum;
+    }, 0);
+
+    // Calculate Workout Streak (Consecutive Active Days)
+    const uniqueDates = [...new Set(
+        workouts
+            .map(w => w.date)
+            .filter(Boolean)
+            .sort((a, b) => new Date(b) - new Date(a))
+    )];
+
+    let streak = 0;
+    let checkDate = new Date();
+    
+    // Check if performed today or yesterday to maintain active streak
+    const todayStr = checkDate.toISOString().split("T")[0];
+    checkDate.setDate(checkDate.getDate() - 1);
+    const yesterdayStr = checkDate.toISOString().split("T")[0];
+
+    if (uniqueDates.includes(todayStr) || uniqueDates.includes(yesterdayStr)) {
+        let current = new Date(uniqueDates.includes(todayStr) ? todayStr : yesterdayStr);
+        while (true) {
+            const dateStr = current.toISOString().split("T")[0];
+            if (uniqueDates.includes(dateStr)) {
+                streak++;
+                current.setDate(current.getDate() - 1);
+            } else {
+                break;
+            }
+        }
+    }
+
+    return {
+        totalWorkouts,
+        totalCalories,
+        totalDuration,
+        avgCaloriesPerWorkout,
+        avgDurationPerWorkout,
+        mostFrequentType,
+        weeklyCalories,
+        workoutStreak: streak
+    };
+}

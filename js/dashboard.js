@@ -1,59 +1,65 @@
+/* ==========================================
+   FITBOD DASHBOARD & ANALYTICS MANAGER
+   ISSUE #9
+========================================== */
+
 function renderDashboard() {
+    const workouts = typeof loadWorkouts === "function" ? loadWorkouts() : [];
+    const water = typeof loadWater === "function" ? loadWater() : 0;
+    const steps = typeof loadSteps === "function" ? loadSteps() : 0;
+    const analytics = typeof getWorkoutAnalytics === "function" ? getWorkoutAnalytics() : {
+        totalWorkouts: 0,
+        totalCalories: 0,
+        totalDuration: 0,
+        avgCaloriesPerWorkout: 0,
+        avgDurationPerWorkout: 0,
+        mostFrequentType: "N/A",
+        weeklyCalories: 0,
+        workoutStreak: 0
+    };
 
-    const data = getData();
+    // DOM Element Updates with Safe Guards
+    const updateEl = (id, val) => {
+        const el = document.getElementById(id);
+        if (el) el.textContent = val;
+    };
 
-    const workoutCount = data.workouts.length;
+    updateEl("workoutCount", analytics.totalWorkouts);
+    updateEl("calorieCount", analytics.totalCalories.toLocaleString());
+    updateEl("waterCount", typeof water === "number" ? water.toFixed(1) : water);
+    updateEl("waterDisplay", `${typeof water === "number" ? water.toFixed(2) : water} L`);
+    updateEl("stepsCount", steps.toLocaleString());
+    updateEl("stepDisplay", steps.toLocaleString());
 
-    const totalCalories =
-        data.workouts.reduce(
-            (total, workout) =>
-                total + Number(workout.calories),
-            0
-        );
+    // Analytics Specific Updates
+    updateEl("totalDuration", `${analytics.totalDuration} mins`);
+    updateEl("avgCalories", `${analytics.avgCaloriesPerWorkout} kcal/session`);
+    updateEl("weeklyCalories", `${analytics.weeklyCalories.toLocaleString()} kcal`);
+    updateEl("frequentWorkout", analytics.mostFrequentType);
+    updateEl("workoutStreak", `${analytics.workoutStreak} day(s)`);
 
-    document.getElementById("workoutCount")
-        .textContent = workoutCount;
+    // Goal Progress Calculation (Target: 5 weekly workouts)
+    const targetWorkouts = 5;
+    const percentage = Math.min((analytics.totalWorkouts / targetWorkouts) * 100, 100);
 
-    document.getElementById("waterCount")
-        .textContent = data.water.toFixed(1);
+    updateEl("summaryProgress", `${analytics.totalWorkouts} / ${targetWorkouts} sessions`);
+    updateEl("goalProgress", `${Math.round(percentage)}%`);
 
-    document.getElementById("waterDisplay")
-        .textContent = `${data.water.toFixed(1)} L`;
-
-    document.getElementById("stepsCount")
-        .textContent = data.steps.toLocaleString();
-
-    document.getElementById("stepDisplay")
-        .textContent = data.steps.toLocaleString();
-
-    document.getElementById("calorieCount")
-        .textContent = totalCalories;
-
-    document.getElementById("summaryProgress")
-        .textContent = `${workoutCount} sessions`;
-
-    const percentage =
-        Math.min((workoutCount / 5) * 100, 100);
-
-    document.getElementById("goalProgress")
-        .textContent = `${Math.round(percentage)}%`;
-
-    document.getElementById("goalBar")
-        .style.width = `${percentage}%`;
+    const goalBar = document.getElementById("goalBar");
+    if (goalBar) {
+        goalBar.style.width = `${percentage}%`;
+    }
 
     renderWorkouts();
 }
 
-
 function renderWorkouts() {
+    const workouts = typeof loadWorkouts === "function" ? loadWorkouts() : [];
+    const container = document.getElementById("workoutList");
 
-    const data = getData();
+    if (!container) return;
 
-    const container =
-        document.getElementById("workoutList");
-
-    if (data.workouts.length === 0) {
-
+    if (workouts.length === 0) {
         container.innerHTML = `
             <div class="workout">
                 <div>
@@ -62,120 +68,47 @@ function renderWorkouts() {
                 </div>
             </div>
         `;
-
         return;
     }
 
-    container.innerHTML =
-        data.workouts.map(workout => `
-            <div class="workout">
-
-                <div>
-                    <strong>${escapeHTML(workout.name)}</strong>
-
-                    <p>
-                        ${workout.duration} minutes ·
-                        ${workout.date}
-                    </p>
-                </div>
-
-                <div>
-                    <span class="calories">
-                        ${workout.calories} kcal
-                    </span>
-
-                    <button
-                        onclick="deleteWorkout(${workout.id})"
-                        style="
-                            border:none;
-                            background:none;
-                            cursor:pointer;
-                            margin-left:10px;
-                        "
-                    >
-                        🗑️
-                    </button>
-                </div>
-
+    container.innerHTML = workouts.map(workout => `
+        <div class="workout">
+            <div>
+                <strong>${escapeHTML(workout.name || 'Workout')}</strong>
+                <p>
+                    ${workout.duration || 0} mins · ${workout.date || 'N/A'}
+                </p>
             </div>
-        `).join("");
+            <div>
+                <span class="calories">
+                    ${workout.calories || 0} kcal
+                </span>
+                <button
+                    onclick="deleteWorkout(${workout.id})"
+                    aria-label="Delete workout"
+                    style="border:none; background:none; cursor:pointer; margin-left:10px;"
+                >
+                    🗑️
+                </button>
+            </div>
+        </div>
+    `).join("");
 }
 
-
-function addWater() {
-
-    const data = getData();
-
-    data.water =
-        Math.min(data.water + 0.25, 10);
-
-    saveData(data);
-
+function deleteWorkout(id) {
+    if (typeof loadWorkouts !== "function" || typeof saveWorkouts !== "function") return;
+    
+    let workouts = loadWorkouts();
+    workouts = workouts.filter(w => w.id !== id);
+    saveWorkouts(workouts);
     renderDashboard();
 }
-
-
-function addSteps() {
-
-    const data = getData();
-
-    data.steps =
-        Math.min(data.steps + 1000, 100000);
-
-    saveData(data);
-
-    renderDashboard();
-}
-
-
-function calculateBMI() {
-
-    const height =
-        Number(document.getElementById("height").value);
-
-    const weight =
-        Number(document.getElementById("weight").value);
-
-    const result =
-        document.getElementById("bmiResult");
-
-    if (height <= 0 || weight <= 0) {
-
-        result.textContent =
-            "Please enter valid height and weight.";
-
-        return;
-    }
-
-    const heightMeters = height / 100;
-
-    const bmi =
-        weight / (heightMeters * heightMeters);
-
-    let category;
-
-    if (bmi < 18.5) {
-        category = "Underweight";
-    } else if (bmi < 25) {
-        category = "Normal weight";
-    } else if (bmi < 30) {
-        category = "Overweight";
-    } else {
-        category = "Obesity";
-    }
-
-    result.innerHTML =
-        `<strong>Your BMI: ${bmi.toFixed(1)}</strong>
-         <br>
-         Category: ${category}`;
-}
-
 
 function escapeHTML(value) {
-
     const div = document.createElement("div");
-
     div.textContent = value;
-
     return div.innerHTML;
 }
+
+// Initial Call
+document.addEventListener("DOMContentLoaded", renderDashboard);
