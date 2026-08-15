@@ -1,6 +1,6 @@
 /* =========================================
    FITBOD APPLICATION CONTROLLER
-   ISSUE #6
+   
 ========================================= */
 
 
@@ -12,17 +12,24 @@ const themeToggle =
     document.getElementById("themeToggle");
 
 
+/*
+   Load saved theme using the
+   central storage manager.
+*/
+
 const savedTheme =
-    localStorage.getItem("fitbodTheme");
+    loadTheme();
 
 
 /*
-   Apply saved theme when the page loads.
+   Apply saved theme when page loads.
 */
 
 if (savedTheme === "light") {
 
-    document.body.classList.add("light-mode");
+    document.body.classList.add(
+        "light-mode"
+    );
 
 }
 
@@ -34,7 +41,9 @@ if (savedTheme === "light") {
 function updateThemeButton() {
 
     if (!themeToggle) {
+
         return;
+
     }
 
 
@@ -98,8 +107,11 @@ if (themeToggle) {
                 );
 
 
-            localStorage.setItem(
-                "fitbodTheme",
+            /*
+               Save through storage.js
+            */
+
+            saveTheme(
                 isLight
                     ? "light"
                     : "dark"
@@ -188,7 +200,9 @@ navLinks.forEach(
 
 
                 if (!target) {
+
                     return;
+
                 }
 
 
@@ -248,36 +262,44 @@ const bmiCategory =
    LOAD SAVED BMI
 ========================================= */
 
-const savedBmi =
-    localStorage.getItem(
-        "fitbodBMI"
-    );
-
-
-const savedBmiCategory =
-    localStorage.getItem(
-        "fitbodBMICategory"
-    );
+const savedBMI =
+    loadBMI();
 
 
 if (
-    savedBmi &&
+    savedBMI &&
     bmiResult
 ) {
 
     bmiResult.textContent =
-        `Your BMI is ${savedBmi}`;
+        `Your BMI is ${savedBMI.bmi}`;
 
 }
 
 
 if (
-    savedBmiCategory &&
+    savedBMI &&
     bmiCategory
 ) {
 
     bmiCategory.textContent =
-        savedBmiCategory;
+        `Category: ${getBmiCategory(savedBMI.bmi)}`;
+
+}
+
+
+if (
+    savedBMI &&
+    heightInput &&
+    weightInput
+) {
+
+    heightInput.value =
+        savedBMI.height;
+
+
+    weightInput.value =
+        savedBMI.weight;
 
 }
 
@@ -355,12 +377,6 @@ if (bmiForm) {
 
             /* =================================
                BMI FORMULA
-
-               BMI =
-               weight / height²
-
-               Height converted from
-               centimetres to metres.
             ================================= */
 
             const heightInMetres =
@@ -376,7 +392,9 @@ if (bmiForm) {
 
 
             const roundedBmi =
-                bmi.toFixed(1);
+                Number(
+                    bmi.toFixed(1)
+                );
 
 
             const category =
@@ -385,7 +403,24 @@ if (bmiForm) {
                 );
 
 
-            /* DISPLAY RESULT */
+            /* =================================
+               SAVE BMI USING STORAGE MANAGER
+            ================================= */
+
+            saveBMI({
+
+                height: height,
+
+                weight: weight,
+
+                bmi: roundedBmi
+
+            });
+
+
+            /* =================================
+               DISPLAY RESULT
+            ================================= */
 
             if (bmiResult) {
 
@@ -401,20 +436,6 @@ if (bmiForm) {
                     `Category: ${category}`;
 
             }
-
-
-            /* SAVE RESULT */
-
-            localStorage.setItem(
-                "fitbodBMI",
-                roundedBmi
-            );
-
-
-            localStorage.setItem(
-                "fitbodBMICategory",
-                `Category: ${category}`
-            );
 
         }
     );
