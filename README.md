@@ -2,7 +2,7 @@
 
 FitBod is an interactive, browser-based health and wellness tracking application. It enables users to log workouts, monitor daily hydration and step goals, calculate Body Mass Index (BMI), and visualize overall progress in real time. All data persists locally in the browser using the Web Storage API.
 
- **Live Demo:** [https://ian-omwenga.github.io/fitbod-161270/](https://ian-omwenga.github.io/fitbod-161270/)
+ **Live Demo:** https://is-project-2026.github.io/fitbod-161270/
 
 ---
 
@@ -13,7 +13,7 @@ FitBod is an interactive, browser-based health and wellness tracking application
 * **Water & Step Tracking:** Real-time visual progress bars tracking daily hydration and physical activity.
 * **BMI Calculator:** Instant Body Mass Index calculation with health category feedback and color coding.
 * **Progress Tracker:** Visual breakdown of overall goal completion across fitness metrics.
-* **Dark / Light Theme:** Persistent theme toggle stored across user sessions.
+* **Dark / Light Theme:** Persistent theme toggling stored across user sessions.
 * **Local Storage Persistence:** Full client-side data persistence with zero backend dependency.
 
 ---
