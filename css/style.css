@@ -2138,3 +2138,18 @@ body.light-mode .workout-modal {
 #stepsProgressBar {
     background: #a855f7 !important; /* Purple Step Bar Styling */
 }
+
+/* =========================================
+   PAGE VIEW VISIBILITY & TRANSITIONS
+========================================= */
+
+.page-view {
+    display: block;
+    opacity: 1;
+    transition: opacity 0.2s ease-in-out;
+}
+
+.page-view.hidden {
+    display: none !important;
+    opacity: 0;
+}
