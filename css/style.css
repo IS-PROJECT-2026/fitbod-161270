@@ -2106,3 +2106,35 @@ body.light-mode .workout-modal {
     }
 
 }
+
+/* =========================================
+   TRACKER ROW FIXES & BLUE HYDRATION BAR
+========================================= */
+
+.tracker-row {
+    flex-wrap: wrap !important;
+}
+
+.tracker-progress-container {
+    width: 100% !important;
+    margin-top: 10px !important;
+}
+
+.tracker-progress {
+    width: 100% !important;
+    height: 8px !important;
+    background: var(--border, #e2e8f0) !important;
+    border-radius: 50px !important;
+    overflow: hidden !important;
+}
+
+.tracker-progress-bar {
+    height: 100% !important;
+    background: #3b82f6 !important; /* Vivid Blue Hydration Styling */
+    border-radius: inherit !important;
+    transition: width 0.3s ease !important;
+}
+
+#stepsProgressBar {
+    background: #a855f7 !important; /* Purple Step Bar Styling */
+}

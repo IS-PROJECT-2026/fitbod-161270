@@ -1,71 +1,55 @@
 /* ==========================================
-   FITBOD MAIN APP INITIALIZER, ROUTER & THEME
+   FITBOD APP INITIALIZER & ROUTER
 ========================================== */
 
 function initTheme() {
-    const themeBtn = document.getElementById("themeToggle") || document.getElementById("theme-toggle");
-    
-    // Check saved local storage preference or default to light
-    const savedTheme = localStorage.getItem("fitbod_theme");
-    if (savedTheme === "dark") {
-        document.body.classList.add("dark-theme");
-        if (themeBtn) themeBtn.textContent = "☀️ Light Mode";
-    } else {
-        document.body.classList.remove("dark-theme");
-        if (themeBtn) themeBtn.textContent = "🌙 Dark Mode";
+    const themeBtn = document.getElementById("themeToggle");
+    const savedTheme = getStoredTheme();
+
+    function applyTheme(theme) {
+        if (theme === "light") {
+            document.body.classList.add("light-mode");
+            if (themeBtn) {
+                themeBtn.textContent = "🌙";
+                themeBtn.setAttribute("aria-label", "Switch to dark mode");
+                themeBtn.setAttribute("title", "Switch to dark mode");
+            }
+        } else {
+            document.body.classList.remove("light-mode");
+            if (themeBtn) {
+                themeBtn.textContent = "☀️";
+                themeBtn.setAttribute("aria-label", "Switch to light mode");
+                themeBtn.setAttribute("title", "Switch to light mode");
+            }
+        }
     }
+
+    applyTheme(savedTheme);
 
     if (themeBtn) {
         themeBtn.addEventListener("click", () => {
-            document.body.classList.toggle("dark-theme");
-            const isDark = document.body.classList.contains("dark-theme");
-
-            // Persist setting to LocalStorage
-            localStorage.setItem("fitbod_theme", isDark ? "dark" : "light");
-
-            // Update button label
-            themeBtn.textContent = isDark ? "☀️ Light Mode" : "🌙 Dark Mode";
+            const isLight = document.body.classList.contains("light-mode");
+            const newTheme = isLight ? "dark" : "light";
+            saveStoredTheme(newTheme);
+            applyTheme(newTheme);
         });
     }
 }
 
 function initNavigation() {
-    const navLinks = document.querySelectorAll("[data-nav]");
-    navLinks.forEach(link => {
-        link.addEventListener("click", (e) => {
-            e.preventDefault();
-            const targetSectionId = link.getAttribute("data-nav");
-            
-            navLinks.forEach(l => l.classList.remove("active"));
-            link.classList.add("active");
+    const navLinks = document.querySelectorAll(".nav-link");
 
-            document.querySelectorAll("section.page-view, .view-section").forEach(section => {
-                if (section.id === targetSectionId) {
-                    section.style.display = "block";
-                    section.classList.add("active");
-                } else {
-                    section.style.display = "none";
-                    section.classList.remove("active");
-                }
-            });
+    navLinks.forEach(link => {
+        link.addEventListener("click", function () {
+            navLinks.forEach(l => l.classList.remove("active"));
+            this.classList.add("active");
         });
     });
 }
 
 document.addEventListener("DOMContentLoaded", () => {
-    // 1. Initialize Theme Switcher (Issue #10)
     initTheme();
-
-    // 2. Initialize Router / Navigation
     initNavigation();
-
-    // 3. Ensure Workout Submit Listener is Initialized
-    if (typeof initWorkouts === "function") {
-        initWorkouts();
-    }
-
-    // 4. Render Initial Dashboard Analytics
-    if (typeof renderDashboard === "function") {
-        renderDashboard();
-    }
+    if (typeof initWorkouts === "function") initWorkouts();
+    if (typeof initTracking === "function") initTracking();
 });
