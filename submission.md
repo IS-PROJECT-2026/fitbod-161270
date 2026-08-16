@@ -66,10 +66,10 @@ Completed Pull Request illustrating code review traceability and automatic issue
 
 ### Conflict 1 — Full Chronology
 
-**What cause did you use?** [Name the type of conflict cause from the lecture]
+**What cause did you use?** Simultaneous edits to the same line or concurrent modifications to the same file (index.html).
 
 #### Step 1: Generating the Clash
-*Screenshot showing the merge attempt and the conflict warning.*
+
 
 <img width="957" height="464" alt="image" src="https://github.com/user-attachments/assets/80d6101b-7404-4ac7-9f03-3bf085a27092" />
 
