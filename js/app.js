@@ -36,16 +36,7 @@ function initTheme() {
     }
 }
 
-function initNavigation() {
-    const navLinks = document.querySelectorAll(".nav-link");
 
-    navLinks.forEach(link => {
-        link.addEventListener("click", function () {
-            navLinks.forEach(l => l.classList.remove("active"));
-            this.classList.add("active");
-        });
-    });
-}
 
 document.addEventListener("DOMContentLoaded", () => {
     initTheme();
@@ -53,3 +44,33 @@ document.addEventListener("DOMContentLoaded", () => {
     if (typeof initWorkouts === "function") initWorkouts();
     if (typeof initTracking === "function") initTracking();
 });
+
+function initNavigation() {
+    const navLinks = document.querySelectorAll(".nav-link");
+    const pageViews = document.querySelectorAll(".page-view");
+
+    navLinks.forEach(link => {
+        link.addEventListener("click", function () {
+            const targetId = this.getAttribute("data-target");
+
+            // 1. Update Active Navigation Tab State
+            navLinks.forEach(l => l.classList.remove("active"));
+            this.classList.add("active");
+
+            // 2. Hide All Views and Display Target View
+            pageViews.forEach(view => {
+                if (view.id === targetId) {
+                    view.classList.remove("hidden");
+                    view.classList.add("active");
+                } else {
+                    view.classList.add("hidden");
+                    view.classList.remove("active");
+                }
+            });
+
+            // 3. Re-render View Component Data
+            if (typeof renderWorkouts === "function") renderWorkouts();
+            if (typeof renderTracking === "function") renderTracking();
+        });
+    });
+}
