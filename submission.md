@@ -47,7 +47,7 @@ Active project milestone for the FitBod Fitness Dashboard displaying the set tim
 
 ### B. Project Board
 
-![alt text](image-1.png)  
+![alt text](image-9.png)
 GitHub Kanban project board showing task traceability with issues organized dynamically across To Do, In Progress, and Done columns.
 
 ### C. Branching Architecture
@@ -87,9 +87,12 @@ Clean branch history after manually picking the unified navigation structure, st
 ### Conflict 2 — Different Cause
 
 - **What cause did you use?** Conflicting function declaration signatures in a shared script file (`js/storage.js`).
+
+![alt text](image-11.png)
 - **Why does this cause trigger a conflict?** Both branches introduced different signatures and default return objects for local storage accessors, causing Git to flag a conflict when merging into `main`.
 
-![alt text](image-7.png)  
+![alt text](image-10.png)
+
 *Caption:* Conflict markers in `js/storage.js` resulting from concurrent modifications to default storage getter definitions.
 
 ---
