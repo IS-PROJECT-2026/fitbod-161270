@@ -12,8 +12,7 @@ const STORAGE_KEYS = {
 // Workouts
 function getStoredWorkouts() {
     try {
-        const data = localStorage.getItem(STORAGE_KEYS.WORKOUTS);
-        return data ? JSON.parse(data) : [];
+        return JSON.parse(localStorage.getItem("fitbod_workouts")) || [];
     } catch (e) {
         return [];
     }
