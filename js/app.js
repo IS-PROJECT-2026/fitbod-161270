@@ -74,4 +74,4 @@ function initNavigation() {
             if (typeof renderTracking === "function") renderTracking();
         });
     });
-}
+}// main branch modification
