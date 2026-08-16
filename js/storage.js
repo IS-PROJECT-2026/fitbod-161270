@@ -10,13 +10,8 @@ const STORAGE_KEYS = {
 };
 
 // Workouts
-function getStoredWorkouts() {
-    try {
-        const data = localStorage.getItem(STORAGE_KEYS.WORKOUTS);
-        return data ? JSON.parse(data) : [];
-    } catch (e) {
-        return [];
-    }
+function getStoredWorkouts(defaultVal = []) {
+    return JSON.parse(localStorage.getItem("fitbod_workouts")) || defaultVal;
 }
 
 function saveStoredWorkouts(workouts) {
