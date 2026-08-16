@@ -98,7 +98,8 @@ Clean branch history after manually picking the unified navigation structure, st
 ### Conflict 3 — Different Cause
 
 - **What cause did you use?** File deletion vs. file modification (e.g., deleting a legacy script while another branch modified it).
-- **Why does this cause trigger a conflict?** One branch modified a function inside `js/app.js` while a parallel refactoring branch renamed or unlinked the script, causing Git to flag an delete/modify state conflict.
+- **Why does this cause trigger a conflict?** One branch modified a function inside `js/app.js` while a parallel refactoring branch unlinked the script, causing Git to flag the state conflict.
 
-[PASTE SCREENSHOT OF CONFLICT MARKERS FOR CONFLICT 3 HERE]  
-*Caption:* Git conflict warning in terminal highlighting a delete/modify dispute on `js/app.js`.
+ 
+![alt text](image-8.png) 
+Git conflict warning in terminal highlighting a delete/modify dispute on `js/app.js`.
