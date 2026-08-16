@@ -72,7 +72,7 @@ Completed Pull Request illustrating code review traceability and automatic issue
 
 ![alt text](image.png)
 
-The feat/2-dashboard-layout branch is being merged into main, but both branches have conflicting changes in index.html. GitHub warns that the conflicts must be resolved before the pull request can be merged.
+The feat/nav-2 branch is being merged into main, but both branches have conflicting changes in index.html. GitHub warns that the conflicts must be resolved before the pull request can be merged.
 
 #### Step 2: Inside the Code Editor (Conflict Markers)
 ![alt text](image-1.png)
