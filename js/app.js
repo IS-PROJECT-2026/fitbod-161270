@@ -1,21 +1,44 @@
 /* ==========================================
-   FITBOD MAIN APP INITIALIZER & ROUTER
-   ISSUE #9
+   FITBOD MAIN APP INITIALIZER, ROUTER & THEME
 ========================================== */
 
-document.addEventListener("DOMContentLoaded", () => {
-    // Navigation / View Switching Logic
+function initTheme() {
+    const themeBtn = document.getElementById("themeToggle") || document.getElementById("theme-toggle");
+    
+    // Check saved local storage preference or default to light
+    const savedTheme = localStorage.getItem("fitbod_theme");
+    if (savedTheme === "dark") {
+        document.body.classList.add("dark-theme");
+        if (themeBtn) themeBtn.textContent = "☀️ Light Mode";
+    } else {
+        document.body.classList.remove("dark-theme");
+        if (themeBtn) themeBtn.textContent = "🌙 Dark Mode";
+    }
+
+    if (themeBtn) {
+        themeBtn.addEventListener("click", () => {
+            document.body.classList.toggle("dark-theme");
+            const isDark = document.body.classList.contains("dark-theme");
+
+            // Persist setting to LocalStorage
+            localStorage.setItem("fitbod_theme", isDark ? "dark" : "light");
+
+            // Update button label
+            themeBtn.textContent = isDark ? "☀️ Light Mode" : "🌙 Dark Mode";
+        });
+    }
+}
+
+function initNavigation() {
     const navLinks = document.querySelectorAll("[data-nav]");
     navLinks.forEach(link => {
         link.addEventListener("click", (e) => {
             e.preventDefault();
             const targetSectionId = link.getAttribute("data-nav");
             
-            // Toggle active styles on links if applicable
             navLinks.forEach(l => l.classList.remove("active"));
             link.classList.add("active");
 
-            // Toggle views
             document.querySelectorAll("section.page-view, .view-section").forEach(section => {
                 if (section.id === targetSectionId) {
                     section.style.display = "block";
@@ -27,23 +50,21 @@ document.addEventListener("DOMContentLoaded", () => {
             });
         });
     });
+}
 
-    // Theme Toggle Handler (if present in app)
-    const themeToggleBtn = document.getElementById("themeToggle");
-    if (themeToggleBtn) {
-        themeToggleBtn.addEventListener("click", () => {
-            document.body.classList.toggle("dark-theme");
-            const isDark = document.body.classList.contains("dark-theme");
-            localStorage.setItem("fitbod_dark_theme", isDark);
-        });
+document.addEventListener("DOMContentLoaded", () => {
+    // 1. Initialize Theme Switcher (Issue #10)
+    initTheme();
 
-        // Load saved theme preference
-        if (localStorage.getItem("fitbod_dark_theme") === "true") {
-            document.body.classList.add("dark-theme");
-        }
+    // 2. Initialize Router / Navigation
+    initNavigation();
+
+    // 3. Ensure Workout Submit Listener is Initialized
+    if (typeof initWorkouts === "function") {
+        initWorkouts();
     }
 
-    // Initialize & Refresh Dashboard Analytics
+    // 4. Render Initial Dashboard Analytics
     if (typeof renderDashboard === "function") {
         renderDashboard();
     }
