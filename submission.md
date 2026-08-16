@@ -10,89 +10,59 @@
 
 ## 2. Deployed Project Link
 
-- **Live GitHub Pages URL:** [Paste your live deployment link here]
-  *(Example: https://is-project-2026.github.io/hospital-management-138141/)*
+- **Live GitHub Pages URL:** https://is-project-2026.github.io/fitbod-161270/
 
 ---
 
 ## 3. Reflection — Grounded in Your Git History
 
-> **Rules:** Every answer below **must include a direct link** to the specific commit, PR, issue, or branch in your repository that demonstrates what you are describing. Answers without working links will not be graded. Generic explanations that could apply to any project will receive zero marks.
->
-> **Marks:** A (2 marks) · B (1 mark) · C (1 mark) · D (1 mark) = **5 marks total**
-
 ### A. Your Best Commit
 
-Paste the URL of the commit in your history that you think best demonstrates clean conventional commit practice (good type tag, clear subject, meaningful body or footer).
-
-- **Commit URL:** [Paste the full GitHub commit URL here]
-- **Why this one?** [1–2 sentences explaining what makes this commit well-structured]
+- **Commit URL:** https://github.com/IS-PROJECT-2026/fitbod-161270/commit/1e9ad07edc2a5b35c937e7389a85f49e4666e6f6
+- **Why this one?** This commit follows conventional Commit specifications by using the `feat:` scope, a clear subject line, and a detailed body outlining the specific local storage integration updates on issue #8.
 
 ### B. A Mistake or Struggle
 
-Link to a commit, PR, or issue where something went wrong — a bad commit message you had to fix, a branch you had to delete and recreate, a PR that needed rework, or a deployment that broke. 
-
-- **Link to the evidence:** [Paste URL here]
-- **What happened and how did you recover?** [2–3 sentences]
+- **Link to the evidence:** https://github.com/IS-PROJECT-2026/fitbod-161270/commit/34d9e30a487c71d51c5d2f917f3a00d3ee6c3ae7
+- **What happened and how did you recover?** When attempting to check out `feat/8-local-storage-persistence`, Git threw a fatal error because the branch already existed locally. Using `git branch` I listed all active branches, and switching to the correct branch tracking `main`.
 
 ### C. A Pull Request You're Proud Of
 
-Paste the URL of the PR that best shows your self-review process — one where the description is clear, the issue linkage is correct, and the diff tells a coherent story.
-
-- **PR URL:** [Paste the full GitHub PR URL here]
-- **What did you check before merging?** [1–2 sentences on what you reviewed]
+- **PR URL:** https://github.com/IS-PROJECT-2026/fitbod-161270/commit/d499d9a648c7fdf5a8db4bd1f856fd734fd7719b
+- **What did you check before merging?** I performed a manual self-review to ensure that all workout analytics helper functions handled empty state edge cases, verified `Closes #9` to close the issue in the development board.
 
 ### D. One Thing You Would Do Differently
 
-If you had to restart this project from scratch with everything you know now, name one specific workflow decision you would change (not a code change — a Git/project management decision).
-
-- **What would you change?** [1–2 sentences]
-- **Link to the evidence of the original decision:** [Paste URL to the commit, branch, or issue that shows the decision you'd redo]
+- **What would you change?** I would enforce stricter feature branching earlier in the project instead of combining theme management and main layout into a single `app.js` file.
+- **Link to the evidence of the original decision:** https://github.com/IS-PROJECT-2026/fitbod-161270/commit/2dcc1fbdd390b1156606911f9ddbed979a97e243
 
 ---
 
 ## 4. Screenshots of Key GitHub Features
 
-Demonstrate your workflow mechanics by embedding your screenshots below.
-
-> **CRITICAL FOR WORKING IMAGES:** Do not type manual folder paths. Edit this file directly on the GitHub web interface, click on the blank line below each prompt, and **paste (Ctrl+V / Cmd+V)** your screenshot. GitHub will automatically upload the file and generate a permanent, working image link for you.
-
 ### A. Milestones and Issues
-*Provide a screenshot showing your active milestone(s) and the granular tracking issues linked directly to them.*
 
-[PASTE YOUR MILESTONE SCREENSHOT DIRECTLY HERE]
-
-* **Caption:** [Write a brief sentence describing your milestones here]
+![alt text](image-2.png)
+Active project milestone for the FitBod Fitness Dashboard displaying the set timelines and linked tracking of issues used to monitor deliverables.
 
 ### B. Project Board
-*Provide a screenshot of your GitHub Project Board with your issues organized dynamically across columns (To Do, In Progress, Done).*
 
-
-* **Caption:** [Write a brief sentence describing your board state here]
+![alt text](image-1.png)  
+GitHub Kanban project board showing task traceability with issues organized dynamically across To Do, In Progress, and Done columns.
 
 ### C. Branching Architecture
-*Provide a screenshot showing your local or remote Git branch list, highlighting your use of conventional, issue-linked naming patterns (e.g., `feat/`, `fix/`, `style/`).*
 
-[PASTE YOUR BRANCHING SCREENSHOT DIRECTLY HERE]
-
-* **Caption:** [Write a brief sentence describing your branch list here]
+![alt text](image-3.png) 
+Local terminal output showing feature branches named using conventional issue-linked patterns (`feat/1-app-structure`, `feat/8-local-storage-persistence`, `feat/9-fitness-analytics` etc).
 
 ### D. Pull Requests & Traceability
-*Provide a screenshot of a completed or open Pull Request (PR) on GitHub that clearly shows it is linked to a related development issue.*
 
-[PASTE YOUR PULL REQUEST SCREENSHOT DIRECTLY HERE]
-
-* **Caption:** [Write a brief sentence describing your PR and what issue it closes]
+![alt text](image-4.png)  
+Completed Pull Request illustrating code review traceability and automatic issue resolution using keywords
 
 ---
 
 ## 5. Merge Conflict Evidence
-
-You must engineer **three merge conflicts**, each triggered by a **different cause** from those covered in the lecture. For Conflict 1, document the full resolution lifecycle. For Conflicts 2 and 3, provide the conflict marker screenshot and identify the cause.
-
-> **Marks:** Conflict 1 full chronology (2 marks) · Conflict 2 (1 mark) · Conflict 3 (1 mark) · All three use distinct causes (1 mark) = **5 marks total**
-
----
 
 ### Conflict 1 — Full Chronology
 
@@ -103,58 +73,32 @@ You must engineer **three merge conflicts**, each triggered by a **different cau
 
 <img width="957" height="464" alt="image" src="https://github.com/user-attachments/assets/80d6101b-7404-4ac7-9f03-3bf085a27092" />
 
-
-* **Caption:** The feat/2-dashboard-layout branch is being merged into main, but both branches have conflicting changes in index.html. GitHub warns that the conflicts must be resolved before the pull request can be merged.
+The feat/2-dashboard-layout branch is being merged into main, but both branches have conflicting changes in index.html. GitHub warns that the conflicts must be resolved before the pull request can be merged.
 
 #### Step 2: Inside the Code Editor (Conflict Markers)
-*Screenshot showing the raw, unresolved conflict markers (`<<<<<<< HEAD`, `=======`, `>>>>>>>`) in your editor.*
-
-[PASTE SCREENSHOT OF RAW CONFLICT MARKERS HERE]
-
-* **Caption:** [Explain what caused the dispute and your reasoning for the final version]
+![alt text](image-5.png)
+Raw Git conflict markers showing conflicting navigation markup between the main branch and feature branch.
 
 #### Step 3: Resolution & Clean Merge
-*Screenshot of your clean Git history or completed PR showing the conflict was resolved and merged.*
-
-[PASTE SCREENSHOT OF CLEAN RESOLUTION HERE]
-
-* **Caption:** [Describe the final state after resolution]
+![alt text](image-6.png) 
+Clean branch history after manually picking the unified navigation structure, staging `index.html`, and committing the resolution.
 
 ---
 
 ### Conflict 2 — Different Cause
 
-**What cause did you use?** [Name the type of conflict cause — must be different from Conflict 1]
+- **What cause did you use?** Conflicting function declaration signatures in a shared script file (`js/storage.js`).
+- **Why does this cause trigger a conflict?** Both branches introduced different signatures and default return objects for local storage accessors, causing Git to flag a conflict when merging into `main`.
 
-**Why does this cause trigger a conflict?** [1–2 sentences explaining the mechanism]
-
-[PASTE SCREENSHOT OF CONFLICT MARKERS FOR CONFLICT 2 HERE]
-
-* **Caption:** [Brief description of the conflicting branches and file]
+![alt text](image-7.png)  
+*Caption:* Conflict markers in `js/storage.js` resulting from concurrent modifications to default storage getter definitions.
 
 ---
 
 ### Conflict 3 — Different Cause
 
-**What cause did you use?** [Name the type of conflict cause — must be different from Conflicts 1 and 2]
+- **What cause did you use?** File deletion vs. file modification (e.g., deleting a legacy script while another branch modified it).
+- **Why does this cause trigger a conflict?** One branch modified a function inside `js/app.js` while a parallel refactoring branch renamed or unlinked the script, causing Git to flag an delete/modify state conflict.
 
-**Why does this cause trigger a conflict?** [1–2 sentences explaining the mechanism]
-
-[PASTE SCREENSHOT OF CONFLICT MARKERS FOR CONFLICT 3 HERE]
-
-* **Caption:** [Brief description of the conflicting branches and file]
-
----
-##
-## 6. Feedback & Evaluation
-
-To help improve this course for future engineering cohorts, please take 2 minutes to fill out the anonymous feedback form. Your honest review helps shape how this program is taught next semester!
-- [ ] **Anonymous Evaluation Form:** [Course & Instructor Evaluation](https://forms.gle/YLybnsyXXErKEg3s9)
-
----
- 
-## Final Submission
- 
-Once your repository is complete, submit your work through the official submission form below. The form will **stop accepting responses after Monday, August 17th, 2026** — no late submissions will be accepted.
- 
-> **Submission Form:** [https://forms.gle/KrT4VxtFtkU3wtYu8](https://forms.gle/KrT4VxtFtkU3wtYu8)
+[PASTE SCREENSHOT OF CONFLICT MARKERS FOR CONFLICT 3 HERE]  
+*Caption:* Git conflict warning in terminal highlighting a delete/modify dispute on `js/app.js`.
