@@ -93,15 +93,18 @@ Clean branch history after manually picking the unified navigation structure, st
 
 ![alt text](image-10.png)
 
-*Caption:* Conflict markers in `js/storage.js` resulting from concurrent modifications to default storage getter definitions.
+Conflict markers in `js/storage.js` resulting from concurrent modifications to default storage getter definitions.
 
 ---
 
 ### Conflict 3 — Different Cause
 
-- **What cause did you use?** File deletion vs. file modification (e.g., deleting a legacy script while another branch modified it).
+- **What cause did you use?** File deletion vs. file modification such as deleting a legacy script while another branch modified it.
 - **Why does this cause trigger a conflict?** One branch modified a function inside `js/app.js` while a parallel refactoring branch unlinked the script, causing Git to flag the state conflict.
 
  
-![alt text](image-8.png) 
+![alt text](image-12.png)
 Git conflict warning in the terminal highlighting a delete/modify dispute on `js/app.js`.
+
+Resloved conflict
+![alt text](image-13.png)
