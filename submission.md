@@ -102,4 +102,4 @@ Clean branch history after manually picking the unified navigation structure, st
 
  
 ![alt text](image-8.png) 
-Git conflict warning in terminal highlighting a delete/modify dispute on `js/app.js`.
+Git conflict warning in the terminal highlighting a delete/modify dispute on `js/app.js`.
