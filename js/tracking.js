@@ -1,481 +1,121 @@
 /* ==========================================
-   FITBOD
-   WATER AND STEPS TRACKING
-   
+   FITBOD TRACKING & BMI CALCULATOR
 ========================================== */
 
+function initTracking() {
+    // Buttons
+    const addWaterBtn = document.getElementById("addWaterBtn");
+    const addStepsBtn = document.getElementById("addStepsBtn");
+    const bmiForm = document.getElementById("bmiForm");
 
-/* ==========================================
-   TRACKING SETTINGS
-========================================== */
+    if (addWaterBtn) {
+        addWaterBtn.addEventListener("click", () => {
+            let currentWater = getStoredWater();
+            currentWater += 0.25; // Add 250ml
+            saveStoredWater(currentWater);
+            renderTracking();
+        });
+    }
 
-const WATER_INCREMENT =
-    0.25;
+    if (addStepsBtn) {
+        addStepsBtn.addEventListener("click", () => {
+            let currentSteps = getStoredSteps();
+            currentSteps += 500; // Add 500 steps
+            saveStoredSteps(currentSteps);
+            renderTracking();
+        });
+    }
 
-const WATER_GOAL =
-    2.5;
+    if (bmiForm) {
+        bmiForm.addEventListener("submit", (e) => {
+            e.preventDefault();
+            calculateBMI();
+        });
+    }
 
-const STEPS_INCREMENT =
-    500;
-
-const STEPS_GOAL =
-    10000;
-
-
-/* ==========================================
-   DOM ELEMENTS
-========================================== */
-
-const addWaterBtn =
-    document.getElementById(
-        "addWaterBtn"
-    );
-
-
-const addStepsBtn =
-    document.getElementById(
-        "addStepsBtn"
-    );
-
-
-const waterDisplay =
-    document.getElementById(
-        "waterDisplay"
-    );
-
-
-const stepDisplay =
-    document.getElementById(
-        "stepDisplay"
-    );
-
-
-const waterCount =
-    document.getElementById(
-        "waterCount"
-    );
-
-
-const stepsCount =
-    document.getElementById(
-        "stepsCount"
-    );
-
-
-const waterProgressBar =
-    document.getElementById(
-        "waterProgressBar"
-    );
-
-
-const stepsProgressBar =
-    document.getElementById(
-        "stepsProgressBar"
-    );
-
-
-const waterProgressText =
-    document.getElementById(
-        "waterProgressText"
-    );
-
-
-const stepsProgressText =
-    document.getElementById(
-        "stepsProgressText"
-    );
-
-
-/* ==========================================
-   GET TODAY
-   USE LOCAL DATE
-========================================== */
-
-function getToday() {
-
-    const today =
-        new Date();
-
-
-    const year =
-        today.getFullYear();
-
-
-    const month =
-        String(
-            today.getMonth() + 1
-        ).padStart(
-            2,
-            "0"
-        );
-
-
-    const day =
-        String(
-            today.getDate()
-        ).padStart(
-            2,
-            "0"
-        );
-
-
-    return `${year}-${month}-${day}`;
-
+    renderTracking();
 }
 
+function renderTracking() {
+    // Water Displays
+    const waterVal = getStoredWater();
+    const waterDisplay = document.getElementById("waterDisplay");
+    const waterCount = document.getElementById("waterCount");
+    const waterBar = document.getElementById("waterProgressBar");
+    const waterText = document.getElementById("waterProgressText");
 
-/* ==========================================
-   INITIALISE DAILY TRACKING
-========================================== */
+    const waterTarget = 2.5;
+    const waterPct = Math.min(Math.round((waterVal / waterTarget) * 100), 100);
 
-function initialiseTracking() {
+    if (waterDisplay) waterDisplay.textContent = `${waterVal.toFixed(2)} L`;
+    if (waterCount) waterCount.textContent = waterVal.toFixed(2);
+    if (waterBar) waterBar.style.width = `${waterPct}%`;
+    if (waterText) waterText.textContent = `${waterPct}% of daily goal`;
 
-    const today =
-        getToday();
+    // Step Displays
+    const stepsVal = getStoredSteps();
+    const stepDisplay = document.getElementById("stepDisplay");
+    const stepsCount = document.getElementById("stepsCount");
+    const stepsBar = document.getElementById("stepsProgressBar");
+    const stepsText = document.getElementById("stepsProgressText");
 
+    const stepsTarget = 10000;
+    const stepsPct = Math.min(Math.round((stepsVal / stepsTarget) * 100), 100);
 
-    const savedDate =
-        loadTrackingDate();
+    if (stepDisplay) stepDisplay.textContent = stepsVal.toLocaleString();
+    if (stepsCount) stepsCount.textContent = stepsVal.toLocaleString();
+    if (stepsBar) stepsBar.style.width = `${stepsPct}%`;
+    if (stepsText) stepsText.textContent = `${stepsPct}% of daily goal`;
 
+    // Overall Goal Bar
+    const goalBar = document.getElementById("goalBar");
+    const goalProgress = document.getElementById("goalProgress");
+    const avgProgress = Math.round((waterPct + stepsPct) / 2);
 
-    /*
-       If there is no saved date
-       or the date has changed,
-       start a fresh tracking day.
-    */
-
-    if (
-        savedDate !== today
-    ) {
-
-        saveWater(0);
-
-        saveSteps(0);
-
-        saveTrackingDate(
-            today
-        );
-
-    }
-
-
-    updateTrackingDisplay();
-
+    if (goalBar) goalBar.style.width = `${avgProgress}%`;
+    if (goalProgress) goalProgress.textContent = `${avgProgress}%`;
 }
 
+function calculateBMI() {
+    const heightInput = document.getElementById("height");
+    const weightInput = document.getElementById("weight");
+    const bmiResult = document.getElementById("bmiResult");
+    const bmiCategory = document.getElementById("bmiCategory");
 
-/* ==========================================
-   ADD WATER
-========================================== */
+    const heightCm = parseFloat(heightInput.value);
+    const weightKg = parseFloat(weightInput.value);
 
-function addWater() {
-
-    let water =
-        loadWater();
-
-
-    water +=
-        WATER_INCREMENT;
-
-
-    /*
-       Prevent unrealistic values.
-    */
-
-    if (water > 20) {
-
-        water = 20;
-
+    if (!heightCm || !weightKg || heightCm <= 0 || weightKg <= 0) {
+        if (bmiResult) bmiResult.textContent = "Please enter valid height and weight values.";
+        return;
     }
 
+    const heightM = heightCm / 100;
+    const bmi = (weightKg / (heightM * heightM)).toFixed(1);
 
-    /*
-       Save through storage.js.
-    */
+    let category = "";
+    let color = "";
 
-    saveWater(
-        water
-    );
+    if (bmi < 18.5) {
+        category = "Underweight";
+        color = "#eab308";
+    } else if (bmi >= 18.5 && bmi < 24.9) {
+        category = "Normal weight";
+        color = "#22c55e";
+    } else if (bmi >= 25 && bmi < 29.9) {
+        category = "Overweight";
+        color = "#f97316";
+    } else {
+        category = "Obesity";
+        color = "#ef4444";
+    }
 
+    if (bmiResult) {
+        bmiResult.textContent = `Your calculated BMI is ${bmi}`;
+    }
 
-    updateTrackingDisplay();
-
+    if (bmiCategory) {
+        bmiCategory.textContent = `Category: ${category}`;
+        bmiCategory.style.color = color;
+    }
 }
-
-
-/* ==========================================
-   ADD STEPS
-========================================== */
-
-function addSteps() {
-
-    let steps =
-        loadSteps();
-
-
-    steps +=
-        STEPS_INCREMENT;
-
-
-    /*
-       Prevent unrealistic values.
-    */
-
-    if (steps > 100000) {
-
-        steps = 100000;
-
-    }
-
-
-    /*
-       Save through storage.js.
-    */
-
-    saveSteps(
-        steps
-    );
-
-
-    updateTrackingDisplay();
-
-}
-
-
-/* ==========================================
-   WATER DISPLAY
-========================================== */
-
-function updateWaterDisplay(
-    water
-) {
-
-    if (waterDisplay) {
-
-        waterDisplay.textContent =
-            `${water.toFixed(2)} L`;
-
-    }
-
-
-    if (waterCount) {
-
-        waterCount.textContent =
-            water.toFixed(2);
-
-    }
-
-
-    const percentage =
-        Math.min(
-            (
-                water /
-                WATER_GOAL
-            ) * 100,
-            100
-        );
-
-
-    if (waterProgressBar) {
-
-        waterProgressBar.style.width =
-            `${percentage}%`;
-
-    }
-
-
-    if (waterProgressText) {
-
-        waterProgressText.textContent =
-            `${Math.round(
-                percentage
-            )}% of daily goal`;
-
-    }
-
-}
-
-
-/* ==========================================
-   STEPS DISPLAY
-========================================== */
-
-function updateStepsDisplay(
-    steps
-) {
-
-    if (stepDisplay) {
-
-        stepDisplay.textContent =
-            steps.toLocaleString();
-
-    }
-
-
-    if (stepsCount) {
-
-        stepsCount.textContent =
-            steps.toLocaleString();
-
-    }
-
-
-    const percentage =
-        Math.min(
-            (
-                steps /
-                STEPS_GOAL
-            ) * 100,
-            100
-        );
-
-
-    if (stepsProgressBar) {
-
-        stepsProgressBar.style.width =
-            `${percentage}%`;
-
-    }
-
-
-    if (stepsProgressText) {
-
-        stepsProgressText.textContent =
-            `${Math.round(
-                percentage
-            )}% of daily goal`;
-
-    }
-
-}
-
-
-/* ==========================================
-   UPDATE OVERALL GOAL
-========================================== */
-
-function updateOverallGoal(
-    water,
-    steps
-) {
-
-    const waterPercentage =
-        Math.min(
-            water /
-            WATER_GOAL,
-            1
-        );
-
-
-    const stepsPercentage =
-        Math.min(
-            steps /
-            STEPS_GOAL,
-            1
-        );
-
-
-    const overallPercentage =
-        (
-            waterPercentage +
-            stepsPercentage
-        ) / 2;
-
-
-    const percentage =
-        Math.round(
-            overallPercentage * 100
-        );
-
-
-    const goalProgress =
-        document.getElementById(
-            "goalProgress"
-        );
-
-
-    const goalBar =
-        document.getElementById(
-            "goalBar"
-        );
-
-
-    if (goalProgress) {
-
-        goalProgress.textContent =
-            `${percentage}%`;
-
-    }
-
-
-    if (goalBar) {
-
-        goalBar.style.width =
-            `${percentage}%`;
-
-    }
-
-}
-
-
-/* ==========================================
-   UPDATE EVERYTHING
-========================================== */
-
-function updateTrackingDisplay() {
-
-    const water =
-        loadWater();
-
-
-    const steps =
-        loadSteps();
-
-
-    updateWaterDisplay(
-        water
-    );
-
-
-    updateStepsDisplay(
-        steps
-    );
-
-
-    updateOverallGoal(
-        water,
-        steps
-    );
-
-}
-
-
-/* ==========================================
-   BUTTON EVENTS
-========================================== */
-
-if (addWaterBtn) {
-
-    addWaterBtn.addEventListener(
-        "click",
-        addWater
-    );
-
-}
-
-
-if (addStepsBtn) {
-
-    addStepsBtn.addEventListener(
-        "click",
-        addSteps
-    );
-
-}
-
-
-/* ==========================================
-   START
-========================================== */
-
-initialiseTracking();

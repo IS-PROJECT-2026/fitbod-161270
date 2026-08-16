@@ -1,345 +1,51 @@
 /* ==========================================
-   FITBOD
-   CENTRAL LOCAL STORAGE MANAGER
-   ISSUE #8
+   FITBOD STORAGE ADAPTER
 ========================================== */
 
-
-/* ==========================================
-   STORAGE KEYS
-========================================== */
-
-const FITBOD_STORAGE_KEYS = {
-
-    workouts: "fitbodWorkouts",
-
-    water: "fitbodDailyWater",
-
-    steps: "fitbodDailySteps",
-
-    trackingDate: "fitbodTrackingDate",
-
-    theme: "fitbodTheme",
-
-    bmi: "fitbodBMI"
-
+const STORAGE_KEYS = {
+    WORKOUTS: "fitbod_workouts",
+    WATER: "fitbod_water",
+    STEPS: "fitbod_steps",
+    THEME: "fitbod_theme"
 };
 
-
-/* ==========================================
-   CHECK LOCAL STORAGE
-========================================== */
-
-function storageAvailable() {
-
+// Workouts
+function getStoredWorkouts() {
     try {
-
-        const testKey = "__fitbod_storage_test__";
-
-        localStorage.setItem(
-            testKey,
-            "test"
-        );
-
-        localStorage.removeItem(
-            testKey
-        );
-
-        return true;
-
-    } catch (error) {
-
-        console.error(
-            "Local storage is unavailable:",
-            error
-        );
-
-        return false;
-
+        const data = localStorage.getItem(STORAGE_KEYS.WORKOUTS);
+        return data ? JSON.parse(data) : [];
+    } catch (e) {
+        return [];
     }
-
 }
 
-
-/* ==========================================
-   SAVE DATA
-========================================== */
-
-function saveData(key, value) {
-
-    if (!storageAvailable()) {
-
-        return false;
-
-    }
-
-    try {
-
-        localStorage.setItem(
-            key,
-            JSON.stringify(value)
-        );
-
-        return true;
-
-    } catch (error) {
-
-        console.error(
-            "Unable to save data:",
-            error
-        );
-
-        return false;
-
-    }
-
+function saveStoredWorkouts(workouts) {
+    localStorage.setItem(STORAGE_KEYS.WORKOUTS, JSON.stringify(workouts));
 }
 
-
-/* ==========================================
-   LOAD DATA
-========================================== */
-
-function loadData(
-    key,
-    defaultValue = null
-) {
-
-    if (!storageAvailable()) {
-
-        return defaultValue;
-
-    }
-
-    try {
-
-        const savedData =
-            localStorage.getItem(key);
-
-
-        if (savedData === null) {
-
-            return defaultValue;
-
-        }
-
-
-        return JSON.parse(savedData);
-
-    } catch (error) {
-
-        console.error(
-            "Unable to load data:",
-            error
-        );
-
-        return defaultValue;
-
-    }
-
+// Water Intake (Litres)
+function getStoredWater() {
+    return parseFloat(localStorage.getItem(STORAGE_KEYS.WATER)) || 0;
 }
 
-
-/* ==========================================
-   REMOVE DATA
-========================================== */
-
-function removeData(key) {
-
-    if (!storageAvailable()) {
-
-        return false;
-
-    }
-
-    try {
-
-        localStorage.removeItem(key);
-
-        return true;
-
-    } catch (error) {
-
-        console.error(
-            "Unable to remove data:",
-            error
-        );
-
-        return false;
-
-    }
-
+function saveStoredWater(val) {
+    localStorage.setItem(STORAGE_KEYS.WATER, val.toFixed(2));
 }
 
-
-/* ==========================================
-   CLEAR FITBOD DATA
-========================================== */
-
-function clearFitBodData() {
-
-    if (!storageAvailable()) {
-
-        return false;
-
-    }
-
-    Object.values(
-        FITBOD_STORAGE_KEYS
-    ).forEach(function(key) {
-
-        localStorage.removeItem(key);
-
-    });
-
-    return true;
-
+// Step Tracking
+function getStoredSteps() {
+    return parseInt(localStorage.getItem(STORAGE_KEYS.STEPS), 10) || 0;
 }
 
-
-/* ==========================================
-   WORKOUT STORAGE
-========================================== */
-
-function saveWorkouts(workouts) {
-
-    return saveData(
-        FITBOD_STORAGE_KEYS.workouts,
-        workouts
-    );
-
+function saveStoredSteps(val) {
+    localStorage.setItem(STORAGE_KEYS.STEPS, val);
 }
 
-
-function loadWorkouts() {
-
-    return loadData(
-        FITBOD_STORAGE_KEYS.workouts,
-        []
-    );
-
+// Theme Preference
+function getStoredTheme() {
+    return localStorage.getItem(STORAGE_KEYS.THEME) || "dark";
 }
 
-
-/* ==========================================
-   WATER STORAGE
-========================================== */
-
-function saveWater(water) {
-
-    return saveData(
-        FITBOD_STORAGE_KEYS.water,
-        Number(water)
-    );
-
-}
-
-
-function loadWater() {
-
-    return Number(
-        loadData(
-            FITBOD_STORAGE_KEYS.water,
-            0
-        )
-    ) || 0;
-
-}
-
-
-/* ==========================================
-   STEPS STORAGE
-========================================== */
-
-function saveSteps(steps) {
-
-    return saveData(
-        FITBOD_STORAGE_KEYS.steps,
-        Number(steps)
-    );
-
-}
-
-
-function loadSteps() {
-
-    return Number(
-        loadData(
-            FITBOD_STORAGE_KEYS.steps,
-            0
-        )
-    ) || 0;
-
-}
-
-
-/* ==========================================
-   TRACKING DATE
-========================================== */
-
-function saveTrackingDate(date) {
-
-    return saveData(
-        FITBOD_STORAGE_KEYS.trackingDate,
-        date
-    );
-
-}
-
-
-function loadTrackingDate() {
-
-    return loadData(
-        FITBOD_STORAGE_KEYS.trackingDate,
-        null
-    );
-
-}
-
-
-/* ==========================================
-   THEME STORAGE
-========================================== */
-
-function saveTheme(theme) {
-
-    return saveData(
-        FITBOD_STORAGE_KEYS.theme,
-        theme
-    );
-
-}
-
-
-function loadTheme() {
-
-    return loadData(
-        FITBOD_STORAGE_KEYS.theme,
-        "dark"
-    );
-
-}
-
-
-/* ==========================================
-   BMI STORAGE
-========================================== */
-
-function saveBMI(bmiData) {
-
-    return saveData(
-        FITBOD_STORAGE_KEYS.bmi,
-        bmiData
-    );
-
-}
-
-
-function loadBMI() {
-
-    return loadData(
-        FITBOD_STORAGE_KEYS.bmi,
-        null
-    );
-
+function saveStoredTheme(theme) {
+    localStorage.setItem(STORAGE_KEYS.THEME, theme);
 }

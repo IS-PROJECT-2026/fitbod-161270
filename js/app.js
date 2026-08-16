@@ -1,499 +1,76 @@
-/* =========================================
-   FITBOD APPLICATION CONTROLLER
-   
-========================================= */
+/* ==========================================
+   FITBOD APP INITIALIZER & ROUTER
+========================================== */
 
+function initTheme() {
+    const themeBtn = document.getElementById("themeToggle");
+    const savedTheme = getStoredTheme();
 
-/* =========================================
-   THEME MANAGEMENT
-========================================= */
-
-const themeToggle =
-    document.getElementById("themeToggle");
-
-
-/*
-   Load saved theme using the
-   central storage manager.
-*/
-
-const savedTheme =
-    loadTheme();
-
-
-/*
-   Apply saved theme when page loads.
-*/
-
-if (savedTheme === "light") {
-
-    document.body.classList.add(
-        "light-mode"
-    );
-
-}
-
-
-/* =========================================
-   UPDATE THEME BUTTON
-========================================= */
-
-function updateThemeButton() {
-
-    if (!themeToggle) {
-
-        return;
-
-    }
-
-
-    const lightMode =
-        document.body.classList.contains(
-            "light-mode"
-        );
-
-
-    if (lightMode) {
-
-        themeToggle.textContent = "🌙";
-
-        themeToggle.setAttribute(
-            "aria-label",
-            "Switch to dark mode"
-        );
-
-        themeToggle.setAttribute(
-            "title",
-            "Switch to dark mode"
-        );
-
-    } else {
-
-        themeToggle.textContent = "☀️";
-
-        themeToggle.setAttribute(
-            "aria-label",
-            "Switch to light mode"
-        );
-
-        themeToggle.setAttribute(
-            "title",
-            "Switch to light mode"
-        );
-
-    }
-
-}
-
-
-/* =========================================
-   TOGGLE THEME
-========================================= */
-
-if (themeToggle) {
-
-    themeToggle.addEventListener(
-        "click",
-        function () {
-
-            document.body.classList.toggle(
-                "light-mode"
-            );
-
-
-            const isLight =
-                document.body.classList.contains(
-                    "light-mode"
-                );
-
-
-            /*
-               Save through storage.js
-            */
-
-            saveTheme(
-                isLight
-                    ? "light"
-                    : "dark"
-            );
-
-
-            updateThemeButton();
-
+    function applyTheme(theme) {
+        if (theme === "light") {
+            document.body.classList.add("light-mode");
+            if (themeBtn) {
+                themeBtn.textContent = "🌙";
+                themeBtn.setAttribute("aria-label", "Switch to dark mode");
+                themeBtn.setAttribute("title", "Switch to dark mode");
+            }
+        } else {
+            document.body.classList.remove("light-mode");
+            if (themeBtn) {
+                themeBtn.textContent = "☀️";
+                themeBtn.setAttribute("aria-label", "Switch to light mode");
+                themeBtn.setAttribute("title", "Switch to light mode");
+            }
         }
-    );
-
-}
-
-
-updateThemeButton();
-
-
-/* =========================================
-   NAVIGATION
-========================================= */
-
-const navLinks =
-    document.querySelectorAll(
-        ".nav-link"
-    );
-
-
-navLinks.forEach(
-    function (link) {
-
-        link.addEventListener(
-            "click",
-            function () {
-
-                navLinks.forEach(
-                    function (item) {
-
-                        item.classList.remove(
-                            "active"
-                        );
-
-                    }
-                );
-
-
-                link.classList.add(
-                    "active"
-                );
-
-            }
-        );
-
     }
-);
 
+    applyTheme(savedTheme);
 
-/* =========================================
-   SMOOTH SCROLLING
-========================================= */
-
-navLinks.forEach(
-    function (link) {
-
-        link.addEventListener(
-            "click",
-            function (event) {
-
-                const targetId =
-                    link.getAttribute("href");
-
-
-                if (
-                    !targetId ||
-                    !targetId.startsWith("#")
-                ) {
-
-                    return;
-
-                }
-
-
-                const target =
-                    document.querySelector(
-                        targetId
-                    );
-
-
-                if (!target) {
-
-                    return;
-
-                }
-
-
-                event.preventDefault();
-
-
-                target.scrollIntoView({
-
-                    behavior: "smooth",
-
-                    block: "start"
-
-                });
-
-            }
-        );
-
+    if (themeBtn) {
+        themeBtn.addEventListener("click", () => {
+            const isLight = document.body.classList.contains("light-mode");
+            const newTheme = isLight ? "dark" : "light";
+            saveStoredTheme(newTheme);
+            applyTheme(newTheme);
+        });
     }
-);
-
-
-/* =========================================
-   BMI CALCULATOR
-========================================= */
-
-const bmiForm =
-    document.getElementById(
-        "bmiForm"
-    );
-
-
-const heightInput =
-    document.getElementById(
-        "height"
-    );
-
-
-const weightInput =
-    document.getElementById(
-        "weight"
-    );
-
-
-const bmiResult =
-    document.getElementById(
-        "bmiResult"
-    );
-
-
-const bmiCategory =
-    document.getElementById(
-        "bmiCategory"
-    );
-
-
-/* =========================================
-   LOAD SAVED BMI
-========================================= */
-
-const savedBMI =
-    loadBMI();
-
-
-if (
-    savedBMI &&
-    bmiResult
-) {
-
-    bmiResult.textContent =
-        `Your BMI is ${savedBMI.bmi}`;
-
 }
 
 
-if (
-    savedBMI &&
-    bmiCategory
-) {
 
-    bmiCategory.textContent =
-        `Category: ${getBmiCategory(savedBMI.bmi)}`;
+document.addEventListener("DOMContentLoaded", () => {
+    initTheme();
+    initNavigation();
+    if (typeof initWorkouts === "function") initWorkouts();
+    if (typeof initTracking === "function") initTracking();
+});
 
-}
+function initNavigation() {
+    const navLinks = document.querySelectorAll(".nav-link");
+    const pageViews = document.querySelectorAll(".page-view");
 
+    navLinks.forEach(link => {
+        link.addEventListener("click", function () {
+            const targetId = this.getAttribute("data-target");
 
-if (
-    savedBMI &&
-    heightInput &&
-    weightInput
-) {
+            // 1. Update Active Navigation Tab State
+            navLinks.forEach(l => l.classList.remove("active"));
+            this.classList.add("active");
 
-    heightInput.value =
-        savedBMI.height;
-
-
-    weightInput.value =
-        savedBMI.weight;
-
-}
-
-
-/* =========================================
-   BMI FORM SUBMISSION
-========================================= */
-
-if (bmiForm) {
-
-    bmiForm.addEventListener(
-        "submit",
-        function (event) {
-
-            event.preventDefault();
-
-
-            const height =
-                Number(
-                    heightInput.value
-                );
-
-
-            const weight =
-                Number(
-                    weightInput.value
-                );
-
-
-            /* VALIDATION */
-
-            if (
-                !height ||
-                !weight ||
-                height <= 0 ||
-                weight <= 0
-            ) {
-
-                showBmiError(
-                    "Please enter a valid height and weight."
-                );
-
-                return;
-
-            }
-
-
-            if (
-                height < 50 ||
-                height > 250
-            ) {
-
-                showBmiError(
-                    "Height must be between 50 cm and 250 cm."
-                );
-
-                return;
-
-            }
-
-
-            if (
-                weight < 10 ||
-                weight > 500
-            ) {
-
-                showBmiError(
-                    "Weight must be between 10 kg and 500 kg."
-                );
-
-                return;
-
-            }
-
-
-            /* =================================
-               BMI FORMULA
-            ================================= */
-
-            const heightInMetres =
-                height / 100;
-
-
-            const bmi =
-                weight /
-                (
-                    heightInMetres *
-                    heightInMetres
-                );
-
-
-            const roundedBmi =
-                Number(
-                    bmi.toFixed(1)
-                );
-
-
-            const category =
-                getBmiCategory(
-                    bmi
-                );
-
-
-            /* =================================
-               SAVE BMI USING STORAGE MANAGER
-            ================================= */
-
-            saveBMI({
-
-                height: height,
-
-                weight: weight,
-
-                bmi: roundedBmi
-
+            // 2. Hide All Views and Display Target View
+            pageViews.forEach(view => {
+                if (view.id === targetId) {
+                    view.classList.remove("hidden");
+                    view.classList.add("active");
+                } else {
+                    view.classList.add("hidden");
+                    view.classList.remove("active");
+                }
             });
 
-
-            /* =================================
-               DISPLAY RESULT
-            ================================= */
-
-            if (bmiResult) {
-
-                bmiResult.textContent =
-                    `Your BMI is ${roundedBmi}`;
-
-            }
-
-
-            if (bmiCategory) {
-
-                bmiCategory.textContent =
-                    `Category: ${category}`;
-
-            }
-
-        }
-    );
-
-}
-
-
-/* =========================================
-   BMI CATEGORY
-========================================= */
-
-function getBmiCategory(bmi) {
-
-    if (bmi < 18.5) {
-
-        return "Underweight";
-
-    }
-
-
-    if (bmi < 25) {
-
-        return "Normal weight";
-
-    }
-
-
-    if (bmi < 30) {
-
-        return "Overweight";
-
-    }
-
-
-    return "Obesity";
-
-}
-
-
-/* =========================================
-   BMI ERROR
-========================================= */
-
-function showBmiError(message) {
-
-    if (bmiResult) {
-
-        bmiResult.textContent =
-            message;
-
-    }
-
-
-    if (bmiCategory) {
-
-        bmiCategory.textContent =
-            "";
-
-    }
-
+            // 3. Re-render View Component Data
+            if (typeof renderWorkouts === "function") renderWorkouts();
+            if (typeof renderTracking === "function") renderTracking();
+        });
+    });
 }
